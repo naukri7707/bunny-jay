@@ -19,6 +19,10 @@ app.get("/", (req, res) => {
   res.sendFile(`${CLIENT_PATH}/index.html`);
 });
 
+app.get("/test", (req, res) => {
+  res.send("10");
+});
+
 // 啟動伺服器
 app.listen(port, err => {
   if (err) {
