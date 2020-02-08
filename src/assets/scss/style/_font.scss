@@ -1,0 +1,27 @@
+$font-name: BunnyJay;
+
+@font-face {
+  font-family: $font-name;
+  src: local("Microsoft YaHei"), local("微軟正黑體");
+}
+
+// 拉丁語系
+@font-face {
+  font-family: $font-name;
+  unicode-range: U+00-024F;
+  src: local("Consolas"), local("Helvetica"), local("Arial");
+}
+
+// 注音符號
+@font-face {
+  font-family: $font-name;
+  unicode-range: U+3100-312F;
+  src: local("LiHei Pro"), local("微軟正黑體");
+}
+
+// 日文假名
+@font-face {
+  font-family: $font-name;
+  unicode-range: U+3040-30FF;
+  src: local("Hiragino Kaku Gothic Pro"), local(Meiryo);
+}

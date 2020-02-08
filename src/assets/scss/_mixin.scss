@@ -1,0 +1,15 @@
+// 按鈕化
+@mixin buttonify {
+  cursor: pointer;
+  text-decoration: none;
+  user-select: none;
+
+  img,
+  a {
+    -webkit-user-drag: none;
+  }
+
+  :hover {
+    text-decoration: none;
+  }
+}
