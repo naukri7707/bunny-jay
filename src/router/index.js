@@ -1,9 +1,16 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-
+// Views
+import Index from "@/views/Index.vue";
+import Borrow from "@/views/Borrow.vue";
+import NotFound from "@/views/404.vue";
 Vue.use(VueRouter);
 
-const routes = [];
+const routes = [
+  { path: "/", component: Index },
+  { path: "/borrow/:thing", component: Borrow },
+  { path: "*", component: NotFound }
+];
 
 const router = new VueRouter({
   mode: "history",
