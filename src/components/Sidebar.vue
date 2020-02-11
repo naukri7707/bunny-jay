@@ -10,13 +10,12 @@
       </div>
       <nav>
         <SidebarItem
-          v-for="item in products"
-          :key="item.key"
-          v-bind="item"
-          :link="`/borrow/${item.key}`"
-          :image="item.iconSide"
-          :selected="item === selection"
-          @click.native="selectItem(item)"
+          v-for="product in $store.state.product.list"
+          :key="product.key"
+          v-bind="product"
+          :link="`/borrow/${product.key}`"
+          :image="product.iconSide"
+          :selected="product === $store.state.product.selection"
         />
       </nav>
     </div>
@@ -26,35 +25,12 @@
 <script>
 import SidebarItem from "@/components/SidebarItem.vue";
 
+// TODO loading anim
+// TODO item card fixed size
 export default {
   name: "Sidebar",
   components: {
     SidebarItem
-  },
-  data() {
-    return {
-      mSelection: {},
-      products: this.$store.state.products
-    };
-  },
-  created() {},
-  computed: {
-    selection: {
-      get() {
-        return this.mSelection;
-      },
-      set(value) {
-        this.mSelection = value;
-        this.$store.dispatch("updateStatus", value.key);
-      }
-    }
-  },
-  methods: {
-    selectItem(target) {
-      // TODO loading anim
-      // TODO item card fixed size
-      this.selection = target;
-    }
   }
 };
 </script>
