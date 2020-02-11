@@ -8,7 +8,7 @@ Vue.use(VueRouter);
 
 const routes = [
   { path: "/", component: Index },
-  { path: "/borrow/:thing", component: Borrow },
+  { path: "/borrow/:product", component: Borrow },
   { path: "*", component: NotFound }
 ];
 
