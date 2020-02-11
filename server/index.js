@@ -23,6 +23,18 @@ app.get("/test", (req, res) => {
   res.send("10");
 });
 
+app.get("/product/update", (req, res) => {
+  // TODO get true data from database
+  res.json({
+    remain: 10,
+    list: [
+      { id: "1", user: "ME", deadline: "2017.09.13" },
+      { id: "2", user: "ME", deadline: "2017.03.14" },
+      { id: "3" }
+    ]
+  });
+});
+
 // 啟動伺服器
 app.listen(port, err => {
   if (err) {
