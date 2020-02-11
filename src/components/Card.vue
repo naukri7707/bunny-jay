@@ -1,20 +1,9 @@
 <template>
   <div class="card">
-    <div class="main-card">
-      <a>
-        <img alt="產品照片1" class="picon" :src="enable ? enable : disable" />
-        <div class="main-card-info">
-          <div>{{ title }}</div>
-          <template v-if="enable">
-            <div>---</div>
-            <div>可預約</div>
-          </template>
-          <template v-else>
-            <div>{{ user }}</div>
-            <div>{{ deadline }}</div>
-          </template>
-        </div>
-      </a>
+    <img class="responsive icon" alt="card-img" :src="src" />
+    <div class="info">
+      <div>{{ title }}</div>
+      <slot></slot>
     </div>
   </div>
 </template>
@@ -23,11 +12,29 @@
 export default {
   name: "Card",
   props: {
-    enable: Boolean,
-    img: String,
-    title: String,
-    user: String,
-    deadline: Number
+    src: String,
+    title: String
   }
 };
 </script>
+
+<style scope lang="scss">
+.card {
+  @include buttonify;
+  display: inline-block;
+  word-wrap: break-word;
+  background-color: #e9e9e7;
+  background-clip: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 1rem;
+  opacity: 90%;
+  width: 140px;
+  margin: 40px 2% 40px;
+  .icon {
+    margin: 10% 0;
+  }
+  .info {
+    text-align: center;
+  }
+}
+</style>

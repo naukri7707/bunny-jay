@@ -29,8 +29,7 @@ app.get("/product/update", (req, res) => {
     remain: 10,
     list: [
       { id: "1", user: "ME", deadline: "2017.09.13" },
-      { id: "2", user: "ME", deadline: "2017.03.14" },
-      { id: "3" }
+      { id: "2", user: "none", deadline: "2017.03.14" }
     ]
   });
 });
