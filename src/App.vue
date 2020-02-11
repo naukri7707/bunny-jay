@@ -2,9 +2,7 @@
   <div id="app">
     <Sidebar />
     <main id="main">
-      <div class="container">
-        <router-view />
-      </div>
+      <router-view />
     </main>
   </div>
 </template>
@@ -19,4 +17,12 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+#app {
+  min-height: 100vh;
+  font-family: "BunnyJay";
+  #main {
+    min-height: inherit;
+  }
+}
+</style>
