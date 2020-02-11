@@ -1,16 +1,18 @@
 <template>
   <div class="sidebar-item">
-    <router-link :to="path">
-      <div class="title">{{ title }}</div>
-      <div class="name">{{ name }}</div>
-      <img class="responsive" :alt="name" :src="img" />
+    <router-link :to="link">
+      <div class="title">{{ zhName }}</div>
+      <div class="sub-title">{{ name }}</div>
+      <img class="responsive" :alt="name" :src="image" />
       <button v-show="!selected">
         快速預借
       </button>
       <div v-show="selected" class="comment">
-        <h4 class="remain">剩餘{{ remain }}台</h4>
-        <h4 v-if="day === 0" class="lenddays">需當天還</h4>
-        <h4 v-else class="lenddays">可借用{{ day }}天</h4>
+        <h4 class="remain">
+          剩餘{{ isNaN(status.remain) ? "???" : status.remain }}台
+        </h4>
+        <h4 v-if="day === 0" class="deadline">需當天還</h4>
+        <h4 v-else class="deadline">可借用{{ day }}天</h4>
       </div>
     </router-link>
   </div>
@@ -19,12 +21,12 @@
 <script>
 export default {
   props: {
+    link: String,
     name: String,
-    title: String,
-    path: String,
-    img: String,
-    remain: Number,
+    zhName: String,
+    image: String,
     day: Number,
+    status: Object,
     selected: Boolean
   }
 };

@@ -10,10 +10,13 @@
       </div>
       <nav>
         <SidebarItem
-          v-for="(item, index) in items"
-          :key="item.name"
+          v-for="item in products"
+          :key="item.key"
           v-bind="item"
-          @click.native="selectItem(index)"
+          :link="`/borrow/${item.key}`"
+          :image="item.iconSide"
+          :selected="item === selection"
+          @click.native="selectItem(item)"
         />
       </nav>
     </div>
@@ -30,121 +33,27 @@ export default {
   },
   data() {
     return {
-      mSelection: 0,
-      items: [
-        {
-          name: "Key",
-          title: "鑰匙",
-          path: "/borrow/key",
-          img: require("@/assets/img/sidebar/key.png"),
-          day: 0
-        },
-        {
-          name: "Camera",
-          title: "相機",
-          path: "/borrow/camera",
-          img: require("@/assets/img/sidebar/camera.png"),
-          day: 3
-        },
-        {
-          name: "Tripod",
-          title: "腳架",
-          path: "/borrow/tripod",
-          img: require("@/assets/img/sidebar/tripod.png"),
-          day: 3
-        },
-        {
-          name: "Laptop",
-          title: "筆記型電腦",
-          path: "/borrow/laptop",
-          img: require("@/assets/img/sidebar/laptop.png"),
-          day: 0
-        },
-        {
-          name: "Pad",
-          title: "平板電腦",
-          path: "/borrow/pad",
-          img: require("@/assets/img/sidebar/pad.png"),
-          day: 3
-        },
-        {
-          name: "Digitizer",
-          title: "電腦繪圖版",
-          path: "/borrow/digitizer",
-          img: require("@/assets/img/sidebar/digitizer.png"),
-          day: 3
-        },
-        {
-          name: "Arduino",
-          title: "Arduino",
-          path: "/borrow/arduino",
-          img: require("@/assets/img/sidebar/arduino.png"),
-          day: 3
-        },
-        {
-          name: "VR headset",
-          title: "VR頭戴裝置",
-          path: "/borrow/VR",
-          img: require("@/assets/img/sidebar/vr.png"),
-          day: 3
-        },
-        {
-          name: "Drone",
-          title: "空拍機",
-          path: "/borrow/drone",
-          img: require("@/assets/img/sidebar/drone.png"),
-          day: 3
-        }
-      ]
+      mSelection: {},
+      products: this.$store.state.products
     };
   },
-  created() {
-    this.items = this.items.map(it => {
-      return Object.assign({}, it, {
-        remain: 0,
-        selected: false
-      });
-    });
-  },
+  created() {},
   computed: {
     selection: {
       get() {
         return this.mSelection;
       },
       set(value) {
-        if (this.items.legalIndex(value)) {
-          this.items[this.mSelection].selected = false;
-          this.items[value].selected = true;
-          this.mSelection = value;
-        }
+        this.mSelection = value;
+        this.$store.dispatch("updateStatus", value.key);
       }
-    },
-    currentItem() {
-      return this.items[this.selection];
     }
   },
   methods: {
     selectItem(target) {
       // TODO loading anim
       // TODO item card fixed size
-      this.axios
-        .get("/test", {
-          params: {
-            thing: this.currentItem.name
-          }
-        })
-        .then(res => {
-          // axios 回傳物件為 res.data 而非 res
-          this.selection = target;
-          this.currentItem.remain = res.data;
-        })
-        .catch(err => {
-          // 請求失敗處理
-          alert(err);
-        })
-        .finally(() => {
-          // 不管如何都執行
-        });
+      this.selection = target;
     }
   }
 };
