@@ -1,0 +1,5 @@
+GET http://localhost:8088/debug/addkey HTTP/1.1
+
+###
+
+GET http://localhost:8088/product/update/key HTTP/1.1
