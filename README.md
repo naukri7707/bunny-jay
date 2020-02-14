@@ -2,31 +2,37 @@
 
 ## 指令
 
+- 啟動資料庫伺服器
+
+  ```shell
+  yarn db
+  ```
+
 - 啟動後台伺服器 (serve/index.js)
 
-  ```yarn
+  ```shell
   node serve
   ```
 
 - 啟動 webpack 熱載伺服器 (開發用)
 
-  ```yarn
+  ```shell
   yarn serve
   ```
 
 - 生成生產用網站
 
-  ```yarn
+  ```shell
   yarn build
   ```
 
 - 使用 es-lint 提示不合規定的語法
 
-  ```yarn
+  ```shell
   yarn lint
   ```
 
-## 資料存放
+## 目錄結構
 
 ### public
 
@@ -75,3 +81,15 @@ vue 主要開發環境
 ### server
 
 後端資料夾
+
+### db
+
+資料庫
+
+#### data
+
+資料
+
+#### log
+
+紀錄
