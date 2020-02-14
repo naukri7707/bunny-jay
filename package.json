@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "db": "mongod --dbpath ./db/data --logpath ./db/log/mongod.log",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
@@ -14,6 +15,7 @@
     "core-js": "^3.6.4",
     "express": "^4.17.1",
     "jquery": "^3.4.1",
+    "mongoose": "^5.9.0",
     "popper.js": "^1.16.1",
     "vue": "^2.6.11",
     "vue-axios": "^2.1.5",
