@@ -49,6 +49,11 @@
       "eslint:recommended",
       "@vue/prettier"
     ],
+    "globals": {
+      "include": false,
+      "config": false,
+      "chalk": false
+    },
     "parserOptions": {
       "parser": "babel-eslint"
     },
