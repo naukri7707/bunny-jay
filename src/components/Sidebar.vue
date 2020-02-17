@@ -53,7 +53,7 @@ $color: #d6d6d6;
   left: 0;
   background-color: #49494b;
   overflow-x: hidden;
-  padding-top: 60px;
+  padding: 4em 2em 4em;
   transition: 0.5s;
   font-family: BunnyJay;
 
@@ -88,6 +88,7 @@ $color: #d6d6d6;
 
   #sidebar {
     width: 0;
+    padding: 0;
   }
 }
 </style>

@@ -22,7 +22,9 @@
         <div>{{ card.deadline }}</div>
       </Card>
     </template>
-    <button @click="addRandomData">新增隨機資料</button>
+    <button class="btn btn-primary" @click="addRandomData">
+      新增隨機資料
+    </button>
   </div>
 </template>
 
