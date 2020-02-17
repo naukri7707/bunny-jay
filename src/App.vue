@@ -13,6 +13,9 @@ import Sidebar from "@/components/Sidebar.vue";
 export default {
   components: {
     Sidebar
+  },
+  created() {
+    this.$router.push(this.$route.query.link);
   }
 };
 </script>
