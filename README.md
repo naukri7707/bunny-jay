@@ -34,9 +34,9 @@
 
 - 啟動資料庫伺服器
 
-```shell
-yarn db
-```
+  ```shell
+  yarn db
+  ```
 
 - 啟動後台伺服器 (serve/index.js)
 
