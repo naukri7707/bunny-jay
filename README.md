@@ -1,12 +1,42 @@
 # bunny-jay
 
+## 快速開始
+
+1. 安裝 vscode、 node.js、mongoDB 和 yarn
+2. 使用 vscode 開啟本專案
+3. 開啟終端機並輸入以下指令安裝所需模組
+
+   ```shell
+   yarn install
+   ```
+
+4. 完成後輸入以下指令開啟資料庫伺服器
+
+   ```shell
+   yarn db
+   ```
+
+5. 開一個新的終端機，輸入以下指令開啟後端伺服器
+
+   ```shell
+   node server
+   ```
+
+6. 再開一個新的終端機，輸入以下指令開啟開發用的前端熱載伺服器
+
+   ```shell
+   node server
+   ```
+
+7. 連線至 <https://localhost:8080/> 即可
+
 ## 指令
 
 - 啟動資料庫伺服器
 
-  ```shell
-  yarn db
-  ```
+```shell
+yarn db
+```
 
 - 啟動後台伺服器 (serve/index.js)
 
@@ -40,7 +70,7 @@
 
 ### src
 
-vue 主要開發環境
+前端資料夾
 
 #### assets
 
@@ -64,11 +94,11 @@ vue 主要開發環境
 
 #### router
 
-虛擬路由
+虛擬路由 (vue-router)
 
 #### store
 
-全域資料
+全域資料 (vuex)
 
 #### views
 
@@ -82,14 +112,22 @@ vue 主要開發環境
 
 後端資料夾
 
-### db
+#### index.js
+
+後端進入點
+
+#### config.js
+
+後端設定檔
+
+#### unitity.js
+
+後端全域變數
+
+#### database
 
 資料庫
 
-#### data
+#### router
 
-資料
-
-#### log
-
-紀錄
+路由
