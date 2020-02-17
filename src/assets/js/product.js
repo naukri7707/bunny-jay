@@ -3,7 +3,7 @@ export default class Product {
   static imgUrl = "assets/img/product";
 
   /** 空產品 */
-  static default = { status: { remain: NaN, list: [] } };
+  static default = { status: { remain: -99, list: [] } };
 
   /**
    * @param {string} key 鍵值
@@ -17,7 +17,7 @@ export default class Product {
     this.zhName = zhName;
     this.day = day;
     this.status = {
-      remain: NaN,
+      remain: -99,
       list: []
     };
   }
