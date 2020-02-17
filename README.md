@@ -28,7 +28,7 @@
    node server
    ```
 
-7. 連線至 <https://localhost:8080/> 即可
+7. 連線至 <http://localhost:8080/> 即可
 
 ## 指令
 
