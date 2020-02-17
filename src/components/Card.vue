@@ -27,7 +27,7 @@ export default {
   background-clip: border-box;
   border: 1px solid rgba(0, 0, 0, 0.125);
   border-radius: 1rem;
-  opacity: 90%;
+  opacity: 0.9;
   width: 140px;
   margin: 40px 2% 40px;
   .icon {
