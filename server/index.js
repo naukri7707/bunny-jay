@@ -1,38 +1,21 @@
+// global import
+require("./unitity");
 // import
 const express = require("express"); // 伺服器工具
-const chalk = require("chalk"); // console log 色彩工具
-
-/** 生產網站路徑 */
-const CLIENT_PATH = `${__dirname}/../dist`;
-
+require("./database/connect.js"); // 連結至資料庫
+const { port, dist } = config.app; // 設定檔
+const routers = require("./router"); // 路由
 /** 連線物件 */
 const app = express();
 
-/** 連接埠 */
-const port = process.env.PORT || 8088;
-
 // initial
-app.use(express.static(CLIENT_PATH));
-
-// get
-app.get("/", (req, res) => {
-  res.sendFile(`${CLIENT_PATH}/index.html`);
+app.use(express.static(dist));
+// routers
+routers.forEach(it => {
+  app.use(it.path, it.router);
 });
 
-app.get("/test", (req, res) => {
-  res.send("10");
-});
-
-app.get("/product/update", (req, res) => {
-  // TODO get true data from database
-  res.json({
-    remain: 10,
-    list: [
-      { id: "1", user: "ME", deadline: "2017.09.13" },
-      { id: "2", user: "none", deadline: "2017.03.14" }
-    ]
-  });
-});
+// TODO 在初始化時讀取全部產品剩餘數量並存成變數減少資料庫操作頻率
 
 // 啟動伺服器
 app.listen(port, err => {
