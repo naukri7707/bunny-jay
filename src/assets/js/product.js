@@ -3,7 +3,7 @@ export default class Product {
   static imgUrl = "assets/img/product";
 
   /** 空產品 */
-  static none = { status: { remain: NaN, list: [] } };
+  static default = { status: { remain: NaN, list: [] } };
 
   /**
    * @param {string} key 鍵值

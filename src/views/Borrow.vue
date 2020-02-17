@@ -5,7 +5,7 @@
     <template v-for="card in selection.status.list">
       <Card
         :key="card.id"
-        v-if="card.user === 'none'"
+        v-if="card.deadline === 0"
         :src="selection.iconOn"
         :title="selection.zhName"
       >
@@ -22,12 +22,14 @@
         <div>{{ card.deadline }}</div>
       </Card>
     </template>
+    <button @click="addRandomData">新增隨機資料</button>
   </div>
 </template>
 
 <script>
 import Card from "@/components/Card.vue";
-
+import Product from "@/assets/js/product";
+// TODO 重新整理資料正確顯示
 export default {
   name: "borrow",
   components: {
@@ -43,10 +45,12 @@ export default {
       };
     }
   },
-  // TODO 連結後台回傳 cardList，讓 v-for cardList 自動響應
   methods: {
     loadData(target) {
       this.$store.dispatch("selectProduct", target);
+    },
+    addRandomData() {
+      this.$store.dispatch("addRandomData");
     }
   },
   beforeRouteEnter(to, from, next) {
@@ -56,12 +60,12 @@ export default {
     });
   },
   beforeRouteUpdate(to, from, next) {
-    next();
     this.loadData(to.params.product);
+    next();
   },
   beforeRouteLeave(to, from, next) {
+    this.$store.state.product.selection = Product.default;
     next();
-    this.$store.state.product.selection = {};
   }
 };
 </script>
