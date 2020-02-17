@@ -1,6 +1,9 @@
 export default class Product {
-  /** 在src資料夾下存放的路徑 */
-  static baseUrl = "assets/img/product";
+  /** 圖片存放路徑 */
+  static imgUrl = "assets/img/product";
+
+  /** 空產品 */
+  static none = { status: { remain: NaN, list: [] } };
 
   /**
    * @param {string} key 鍵值
@@ -21,21 +24,21 @@ export default class Product {
 
   /** 租借頁背景圖 */
   get background() {
-    return require(`@/${Product.baseUrl}/${this.key}_bg.png`);
+    return require(`@/${Product.imgUrl}/${this.key}_bg.png`);
   }
 
   /** 可租借圖示 */
   get iconOn() {
-    return require(`@/${Product.baseUrl}/${this.key}_on.png`);
+    return require(`@/${Product.imgUrl}/${this.key}_on.png`);
   }
 
   /** 不可租借圖示 */
   get iconOff() {
-    return require(`@/${Product.baseUrl}/${this.key}_off.png`);
+    return require(`@/${Product.imgUrl}/${this.key}_off.png`);
   }
 
   /** 側邊欄圖示 */
   get iconSide() {
-    return require(`@/${Product.baseUrl}/${this.key}_side.png`);
+    return require(`@/${Product.imgUrl}/${this.key}_side.png`);
   }
 }
