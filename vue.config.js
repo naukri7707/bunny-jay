@@ -1,7 +1,5 @@
 // vue.config文檔 https://cli.vuejs.org/zh/config/
 
-const webpack = require("webpack");
-
 module.exports = {
   // 基礎路徑
   publicPath: "/",
@@ -21,15 +19,10 @@ module.exports = {
   runtimeCompiler: true,
 
   // webpack 內部配置。
-  chainWebpack: () => {},
-  configureWebpack: {
-    plugins: [
-      new webpack.ProvidePlugin({
-        $: "jquery",
-        jQuery: "jquery"
-      })
-    ]
-  },
+  // chainWebpack: () => {},
+  // configureWebpack: {
+  //   plugins: []
+  // },
 
   // vue-loader 配置
   // vueLoader: {},
