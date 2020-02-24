@@ -1,5 +1,5 @@
 <template>
-  <div id="borrow" :style="styleBorrow">
+  <div id="borrow">
     <h1>Bunny Jay {{ selection.zhName }}</h1>
 
     <template v-for="card in selection.status.list">
@@ -22,16 +22,16 @@
         <div>{{ card.deadline }}</div>
       </Card>
     </template>
-    <button class="btn btn-primary" @click="addRandomData">
+    <b-button @click="addRandomData">
       新增隨機資料
-    </button>
+    </b-button>
   </div>
 </template>
 
 <script>
 import Card from "@/components/Card.vue";
 import Product from "@/assets/js/product";
-// TODO 重新整理資料正確顯示
+
 export default {
   name: "borrow",
   components: {
@@ -40,11 +40,6 @@ export default {
   computed: {
     selection() {
       return this.$store.state.product.selection;
-    },
-    styleBorrow() {
-      return {
-        backgroundImage: `url(${this.selection.background})`
-      };
     }
   },
   methods: {
@@ -72,13 +67,4 @@ export default {
 };
 </script>
 
-<style scope lang="scss">
-#borrow {
-  min-height: inherit;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 100%;
-  background-color: #f5f5f5;
-  background-attachment: fixed;
-}
-</style>
+<style scope lang="scss"></style>

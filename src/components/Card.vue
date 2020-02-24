@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card1">
     <img class="responsive icon" alt="card-img" :src="src" />
     <div class="info">
       <div>{{ title }}</div>
@@ -19,7 +19,7 @@ export default {
 </script>
 
 <style scope lang="scss">
-.card {
+.card1 {
   @include buttonify;
   display: inline-block;
   word-wrap: break-word;
