@@ -1,0 +1,10 @@
+:root {
+  --sidebar-width: 20rem;
+
+  @media screen and (max-width: 992px) {
+    --sidebar-width: 100vw;
+  }
+}
+
+$sidebar-transition: all 0.5s ease;
+$sidebar-width: var(--sidebar-width);
