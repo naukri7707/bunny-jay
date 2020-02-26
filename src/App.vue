@@ -31,27 +31,9 @@ export default {
 </script>
 
 <style lang="scss">
-:root {
-  --app-height: 100%;
-}
-
-html,
-body {
-  padding: 0;
-  margin: 0;
-  overflow: scroll;
-  width: 100vw;
-  height: 100vh;
-
-  @media not all and (hover: hover) {
-    height: var(--app-height);
-  }
-}
-
 #app {
-  height: 100vh;
+  min-height: 100vh;
   font-family: "BunnyJay";
-
   background-repeat: no-repeat;
   background-position: center;
   background-size: 100%;
