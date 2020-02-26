@@ -1,7 +1,7 @@
 <template>
   <aside ref="sidebar" id="sidebar">
     <MenuIcon :class="{ hidden }" :cross="!hidden" @click="hidden = !hidden" />
-    <div :class="['sidebar-menu', { hidden: hidden }]">
+    <div :class="['sidebar-menu', 'auto-hide-scrollbar', { hidden: hidden }]">
       <router-link class="brand" to="/">
         <div class="sup-title">多媒體設計系 系辦</div>
         <div class="title">租借項目</div>
@@ -75,6 +75,7 @@ $color: #d6d6d6;
     position: absolute;
     top: 1rem;
     left: calc(100% - 4rem);
+    z-index: 2;
     transition: $sidebar-transition;
 
     &.hidden {
