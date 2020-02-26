@@ -1,10 +1,26 @@
+// 響應式變數，宣告css變數後在解析度臨界點過載之來達成自動響應
+// 在最後包裝成scss變數以統一格式
 :root {
-  --sidebar-width: 20rem;
+  // 手機 (直向) -xs ( < 576px )
+  --sidebar-width: 100vw;
 
-  @media screen and (max-width: 992px) {
-    --sidebar-width: 100vw;
+  // 手機 (橫向) -sm ( < 768px )
+  @media (min-width: 576px) {
+    --sidebar-width: 20rem;
+  }
+
+  // 平板 -md ( < 992px )
+  @media (min-width: 768px) {
+  }
+
+  // 筆電 -lg ( < 1200px )
+  @media (min-width: 992px) {
+  }
+
+  // 螢幕 ( >= 1200px )
+  @media (min-width: 1200px) {
   }
 }
 
-$sidebar-transition: all 0.5s ease;
 $sidebar-width: var(--sidebar-width);
+$sidebar-transition: all 0.5s ease;
