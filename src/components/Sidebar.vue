@@ -39,7 +39,6 @@
 <script>
 import MenuIcon from "@/components/MenuIcon.vue";
 import SidebarCard from "@/components/SidebarCard.vue";
-// TODO 定義 響應式邊界 (參考 bootstrap ?)
 // TODO 小螢幕自動隱藏
 export default {
   name: "Sidebar",
@@ -123,15 +122,4 @@ $color: #d6d6d6;
     }
   }
 }
-// TODO app 做 resp
-// @media (max-width: 992px) {
-//   #main {
-//     margin-left: 0;
-//   }
-
-//   #sidebar {
-//     width: 0;
-//     padding: 0;
-//   }
-// }
 </style>

@@ -8,7 +8,6 @@ const { product } = include("@/database");
 
 router.get("/update", async (req, res) => {
   let { target } = req.query;
-  // TODO fix remain
   let doc = await product[target].find();
   res.json({
     remain: 10,
@@ -18,7 +17,6 @@ router.get("/update", async (req, res) => {
 
 router.get("/addRandom", (req, res) => {
   let { target, user, deadline } = req.query;
-  // TODO fix remain
   product[target].create({ user, deadline }, err => {
     if (err) {
       res.json({ code: 1, msg: err });
