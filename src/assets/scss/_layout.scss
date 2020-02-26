@@ -1,0 +1,18 @@
+:root {
+  --app-height: 100%;
+  font-family: "BunnyJay";
+}
+
+/* 修正手機因隱藏網址列導致`vh`錯誤問題 */
+html,
+body {
+  padding: 0;
+  margin: 0;
+  overflow: scroll;
+  width: 100vw;
+  height: 100vh;
+
+  @media not all and (hover: hover) {
+    height: var(--app-height);
+  }
+}

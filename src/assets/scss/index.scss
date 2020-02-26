@@ -1,7 +1,7 @@
-// Configuration
+// scss 預設布局 (編譯前)
 @import "style";
 @import "mixin";
 @import "variables";
 
-// Layout & Components
-@import "root";
+// css 預設布局 (編譯後)
+@import "layout";
