@@ -1,5 +1,5 @@
 <template>
-  <b-card>
+  <b-card class="sidebar-card">
     <b-link :to="to">
       <slot></slot>
     </b-link>
@@ -17,7 +17,7 @@ export default {
 $font-size: 1em;
 $title-color: white;
 
-.card {
+.sidebar-card {
   @include buttonify;
   margin: 20px auto 40px;
   background-color: #b8b8b8;
