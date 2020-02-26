@@ -1,25 +1,25 @@
 <template>
-  <div class="card1">
-    <img class="responsive icon" alt="card-img" :src="src" />
+  <b-card class="borrow-card" :img-src="imgSrc" :img-alt="imgAlt" img-top>
     <div class="info">
       <div>{{ title }}</div>
       <slot></slot>
     </div>
-  </div>
+  </b-card>
 </template>
 
 <script>
 export default {
-  name: "Card",
+  name: "BorrowCard",
   props: {
-    src: String,
-    title: String
+    title: String,
+    imgSrc: String,
+    imgAlt: String
   }
 };
 </script>
 
 <style scope lang="scss">
-.card1 {
+.borrow-card {
   @include buttonify;
   display: inline-block;
   word-wrap: break-word;
@@ -28,12 +28,11 @@ export default {
   border: 1px solid rgba(0, 0, 0, 0.125);
   border-radius: 1rem;
   opacity: 0.9;
-  width: 140px;
+  width: 10rem;
   margin: 40px 2% 40px;
-  .icon {
-    margin: 10% 0;
-  }
-  .info {
+
+  .card-body {
+    padding: 0 0 1rem;
     text-align: center;
   }
 }

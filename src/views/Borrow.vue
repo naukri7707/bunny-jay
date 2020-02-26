@@ -1,41 +1,43 @@
 <template>
-  <div id="borrow">
+  <b-container id="borrow">
     <h1>Bunny Jay {{ selection.zhName }}</h1>
 
     <template v-for="card in selection.status.list">
-      <Card
-        :key="card.id"
+      <BorrowCard
         v-if="card.deadline === 0"
-        :src="selection.iconOn"
+        :key="card.id"
         :title="selection.zhName"
+        :img-src="selection.iconOn"
+        :img-alt="selection.key"
       >
         <div>---</div>
         <div>可預約</div>
-      </Card>
-      <Card
-        :key="card.id"
+      </BorrowCard>
+      <BorrowCard
         v-else
-        :src="selection.iconOff"
+        :key="card.id"
         :title="selection.zhName"
+        :img-src="selection.iconOff"
+        :img-alt="selection.key"
       >
         <div>{{ card.user }}</div>
         <div>{{ card.deadline }}</div>
-      </Card>
+      </BorrowCard>
     </template>
     <b-button @click="addRandomData">
       新增隨機資料
     </b-button>
-  </div>
+  </b-container>
 </template>
 
 <script>
-import Card from "@/components/Card.vue";
+import BorrowCard from "@/components/BorrowCard.vue";
 import Product from "@/assets/js/product";
 
 export default {
   name: "borrow",
   components: {
-    Card
+    BorrowCard
   },
   computed: {
     selection() {
