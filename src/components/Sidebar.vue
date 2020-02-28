@@ -39,7 +39,8 @@
 <script>
 import MenuIcon from "@/components/MenuIcon.vue";
 import SidebarCard from "@/components/SidebarCard.vue";
-// TODO 小螢幕自動隱藏
+import Responsive from "@/assets/js/responsive";
+
 export default {
   name: "Sidebar",
   components: {
@@ -58,6 +59,9 @@ export default {
         this.$store.state.sidebar.hidden = value;
       }
     }
+  },
+  created() {
+    this.hidden = Responsive.windowWidth["=="]("XS");
   }
 };
 </script>
