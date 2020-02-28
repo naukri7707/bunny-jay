@@ -2,6 +2,7 @@
   <div id="app" :style="appStyle">
     <Sidebar />
     <main id="main" :class="{ 'sidebar-hidden': $store.state.sidebar.hidden }">
+      <Navbar />
       <router-view />
     </main>
   </div>
@@ -9,10 +10,12 @@
 
 <script>
 import Sidebar from "@/components/Sidebar.vue";
+import Navbar from "@/components/Navbar.vue";
 
 export default {
   components: {
-    Sidebar
+    Sidebar,
+    Navbar
   },
   computed: {
     selection() {
