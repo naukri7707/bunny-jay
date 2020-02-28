@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "db": "mongod --dbpath ./db/data --logpath ./db/log/mongod.log",
+    "mkdbdir": "mkdir .\\db\\data & mkdir .\\db\\log",
+    "db": "mongod --dbpath .\\db\\data --logpath .\\db\\log\\mongod.log",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
