@@ -25,9 +25,9 @@ export default {
   display: inline-block;
   cursor: pointer;
 
-  div {
-    width: 2rem;
-    height: 0.35rem;
+  > div {
+    width: 1.75rem;
+    height: 0.25rem;
     background-color: #333;
     margin: 0.4rem 0;
     transition: $sidebar-transition;
@@ -35,6 +35,10 @@ export default {
 }
 
 .cross {
+  > div {
+    width: 2rem;
+    height: 0.35rem;
+  }
   .bar1 {
     transform: rotate(45deg) translate(0.6rem, 0.5rem);
   }

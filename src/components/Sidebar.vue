@@ -72,17 +72,22 @@ $color: #d6d6d6;
 
 #sidebar {
   position: fixed;
-  z-index: 1;
+  z-index: 1021;
 
   .menu-icon {
     position: absolute;
-    top: 1rem;
-    left: calc(100% - 4rem);
-    z-index: 2;
+
+    top: 0.5rem;
+    left: calc(100% - 3.5rem);
     transition: $sidebar-transition;
 
     &.hidden {
+      position: absolute;
       left: 1rem;
+
+      > div {
+        background-color: rgba(255, 255, 255, 0.5);
+      }
     }
   }
 
