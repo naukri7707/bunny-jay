@@ -31,7 +31,7 @@
 7. 再開一個新的終端機，輸入以下指令開啟開發用的前端熱載伺服器
 
    ```shell
-   node server
+   yarn serve
    ```
 
 8. 連線至 <http://localhost:8080/> 即可
