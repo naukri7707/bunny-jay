@@ -4,12 +4,13 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 
-// bootstrap
+// bootstrap-vue
 import { BootstrapVue, BootstrapVueIcons } from "bootstrap-vue";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-vue/dist/bootstrap-vue.min.css";
+import PortalVue from "portal-vue";
 
-// axios
+// vue-axios
 import axios from "axios";
 import vueAxios from "vue-axios";
 
@@ -17,8 +18,10 @@ import vueAxios from "vue-axios";
 import "./assets/js";
 
 Vue.use(BootstrapVue);
+Vue.use(PortalVue);
 Vue.use(BootstrapVueIcons); // 分開載入否則會出問題
 Vue.use(vueAxios, axios);
+
 Vue.config.productionTip = false;
 
 new Vue({
