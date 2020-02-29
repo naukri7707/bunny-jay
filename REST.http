@@ -4,6 +4,23 @@ GET http://localhost:8088/debug/addkey HTTP/1.1
 
 GET http://localhost:8088/product/update/key HTTP/1.1
 
-### 
+### login
 
 POST http://localhost:8088/user/login HTTP/1.1
+content-type: application/json
+ 
+{
+    "username": "sysop",
+    "password": "sysop"
+}
+
+### sign-up
+
+POST http://localhost:8088/user/sign-up HTTP/1.1
+content-type: application/json
+ 
+{
+    "username": "user1",
+    "password": "user1",
+    "nickname": "user1"
+}
