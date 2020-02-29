@@ -51,8 +51,24 @@ export default {
     };
   },
   methods: {
+    alert(title, msg) {
+      this.$bvToast.toast(msg, {
+        title,
+        toaster: "b-toaster-top-center",
+        solid: true
+      });
+    },
     onSubmit() {
-      this.$store.dispatch("login", this.form);
+      this.$store.dispatch("login", this.form).then(
+        ({ data }) => {
+          // TODO toast 專用 components 保證跳轉時不消失
+          this.alert("登入成功", `歡迎回來\n\n${data}`);
+          // this.$router.push("/");
+        },
+        ({ status, data }) => {
+          this.alert(`Error ${status}`, data);
+        }
+      );
     },
     onCancel() {
       this.$router.go(-1);

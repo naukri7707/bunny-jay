@@ -1,19 +1,25 @@
 import axios from "axios";
 
 export default {
-  state: {},
+  state: {
+    login: false,
+    nickname: ""
+  },
   actions: {
     /** 登入 */
-    login(context, data) {
-      const state = context.state;
-      axios
-        .post("/user/login", data)
-        .then(res => {
-          state.selection.status = res.data;
-        })
-        .catch(err => {
-          alert(`資料更新失敗\n\n${err}`);
-        });
+    login({ state }, data) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post("/user/login", data)
+          .then(res => {
+            state.login = true;
+            state.nickname = res.data;
+            resolve(res);
+          })
+          .catch(err => {
+            reject(err.response);
+          });
+      });
     }
   }
 };
