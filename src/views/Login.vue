@@ -26,13 +26,13 @@
           ></b-form-input>
         </b-input-group>
         <b-form-group>
-          <b-form-checkbox-group v-model="form.check">
-            <b-form-checkbox value="remember-me">記住帳號</b-form-checkbox>
-            <b-form-checkbox value="dont-logout">保持登入狀態</b-form-checkbox>
+          <b-form-checkbox-group v-model="form.option">
+            <b-form-checkbox value="keep-login">
+              保持登入狀態
+            </b-form-checkbox>
           </b-form-checkbox-group>
         </b-form-group>
         <b-button type="submit" variant="primary">登入</b-button>
-        <b-button type="cancel">取消</b-button>
       </b-form>
     </b-row>
   </b-container>
@@ -46,7 +46,7 @@ export default {
       form: {
         username: "",
         password: "",
-        check: []
+        option: []
       }
     };
   },
@@ -62,7 +62,7 @@ export default {
       this.$store.dispatch("login", this.form).then(
         ({ data }) => {
           // TODO toast 專用 components 保證跳轉時不消失
-          this.alert("登入成功", `歡迎回來\n\n${data}`);
+          this.alert("登入成功", `歡迎回來\n\n${data.nickname}`);
           // this.$router.push("/");
         },
         ({ status, data }) => {
