@@ -10,7 +10,7 @@ Vue.use(VueRouter);
 // TODO user to modules & path => /user/login
 const routes = [
   { path: "/", component: Index },
-  { path: "/login", component: Login },
+  { path: "/user/login", component: Login },
   { path: "/borrow/:product", component: Borrow },
   { path: "*", component: NotFound }
 ];
