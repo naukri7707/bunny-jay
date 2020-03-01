@@ -18,24 +18,27 @@ export default {
   actions: {
     /** 更新產品狀態 */
     selectProduct(context, target) {
-      const state = context.state;
-      if (target in state.list) {
-        // 選擇產品
-        state.selection = state.list[target];
-        // 更新產品狀態
-        axios
-          .get("/product/update", {
-            params: {
-              target
-            }
-          })
-          .then(res => {
-            state.selection.status = res.data;
-          })
-          .catch(err => {
-            alert(`資料更新失敗\n\n${err}`);
-          });
-      }
+      return new Promise((resolve, reject) => {
+        const state = context.state;
+        if (target in state.list) {
+          // 選擇產品
+          state.selection = state.list[target];
+          // 更新產品狀態
+          axios
+            .get("/product/update", {
+              params: {
+                target
+              }
+            })
+            .then(res => {
+              state.selection.status = res.data;
+              resolve();
+            })
+            .catch(err => {
+              reject(err.response);
+            });
+        }
+      });
     },
     addRandomData(context) {
       function randomID(length) {

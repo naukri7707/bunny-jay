@@ -46,7 +46,15 @@ export default {
   },
   methods: {
     loadData(target) {
-      this.$store.dispatch("selectProduct", target);
+      this.$store.dispatch("selectProduct", target).then(
+        () => {},
+        ({ status, data }) => {
+          this.toast(`Error ${status}`, data, {
+            toaster: "TR",
+            variant: "danger"
+          });
+        }
+      );
     },
     addRandomData() {
       this.$store.dispatch("addRandomData");

@@ -27,7 +27,8 @@ export default {
       return new Promise((resolve, reject) => {
         axios
           .post("/user/logout")
-          .then(res => {
+          .then(() => {
+            let res = state.nickname;
             state = Object.assign(state, {
               uid: "",
               username: "",

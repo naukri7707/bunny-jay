@@ -51,22 +51,20 @@ export default {
     };
   },
   methods: {
-    alert(title, msg) {
-      this.$bvToast.toast(msg, {
-        title,
-        toaster: "b-toaster-top-center",
-        solid: true
-      });
-    },
     onSubmit() {
       this.$store.dispatch("login", this.form).then(
         ({ data }) => {
-          // TODO toast 專用 components 保證跳轉時不消失
-          this.alert("登入成功", `歡迎回來\n\n${data.nickname}`);
-          // this.$router.push("/");
+          this.toast("登入成功", `歡迎回來，${data.nickname}`, {
+            toaster: "TC",
+            variant: "success"
+          });
+          this.$router.go(-1);
         },
         ({ status, data }) => {
-          this.alert(`Error ${status}`, data);
+          this.toast(`Error ${status}`, data, {
+            toaster: "TC",
+            variant: "danger"
+          });
         }
       );
     },
