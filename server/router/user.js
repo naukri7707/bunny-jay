@@ -51,6 +51,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
+// 用戶登出
 router.post("/logout", async (req, res) => {
   req.session.destroy(err => {
     if (err) {
