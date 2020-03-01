@@ -30,7 +30,6 @@ export default {
   created() {
     this.$store.dispatch("autologin");
     this.$router.push(this.$route.query.link);
-    // TODO 判斷 session 是否存在 (已登入)
   }
 };
 </script>
