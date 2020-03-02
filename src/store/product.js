@@ -2,6 +2,7 @@ import axios from "axios";
 import Product from "@/assets/js/product";
 
 export default {
+  namespaced: true,
   state: {
     selection: Product.default,
     list: {

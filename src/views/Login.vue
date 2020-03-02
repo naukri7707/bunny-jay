@@ -52,7 +52,7 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.$store.dispatch("login", this.form).then(
+      this.$store.dispatch("user/login", this.form).then(
         ({ data }) => {
           this.toast("登入成功", `歡迎回來，${data.nickname}`, {
             toaster: "TC",

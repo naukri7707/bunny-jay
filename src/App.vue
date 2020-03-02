@@ -28,7 +28,7 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch("autologin");
+    this.$store.dispatch("user/autologin");
     this.$router.push(this.$route.query.link);
   }
 };

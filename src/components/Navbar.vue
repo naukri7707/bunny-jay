@@ -23,7 +23,7 @@ export default {
   },
   methods: {
     logout() {
-      this.$store.dispatch("logout").then(
+      this.$store.dispatch("user/logout").then(
         nickname => {
           this.toast("登出成功", `再見，${nickname}`, {
             toaster: "TC",

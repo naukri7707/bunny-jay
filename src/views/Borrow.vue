@@ -46,7 +46,7 @@ export default {
   },
   methods: {
     loadData(target) {
-      this.$store.dispatch("selectProduct", target).then(
+      this.$store.dispatch("product/selectProduct", target).then(
         () => {},
         ({ status, data }) => {
           this.toast(`Error ${status}`, data, {
@@ -57,7 +57,7 @@ export default {
       );
     },
     addRandomData() {
-      this.$store.dispatch("addRandomData");
+      this.$store.dispatch("product/addRandomData");
     }
   },
   beforeRouteEnter(to, from, next) {
