@@ -52,9 +52,10 @@
       "@vue/prettier"
     ],
     "globals": {
-      "include": false,
       "config": false,
-      "chalk": false
+      "chalk": false,
+      "include": false,
+      "init": false
     },
     "parserOptions": {
       "parser": "babel-eslint"
