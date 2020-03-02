@@ -6,21 +6,23 @@ const router = require("express").Router();
 
 const { user } = include("@/database");
 
-// 當前用戶序列號
+// 下一個新用戶序列號
 let uid = 0;
 
-// 初始化 uid
-user
-  .find({})
-  .sort({ uid: -1 })
-  .limit(1)
-  .exec((err, doc) => {
-    if (err || !doc) {
-      console.log("User ID 初始化失敗");
-    } else {
-      uid = doc[0]._id + 1;
+init(next => {
+  // 初始化 uid
+  user.aggregate(
+    [{ $group: { _id: null, max: { $max: "$_id" } } }],
+    (err, res) => {
+      if (res.length === 0) {
+        uid = 1;
+      } else {
+        uid = res[0].max + 1;
+      }
+      next();
     }
-  });
+  );
+});
 
 // 用戶登入
 router.post("/login", async (req, res) => {
@@ -32,9 +34,11 @@ router.post("/login", async (req, res) => {
         if (err) {
           res.status(500).send("Session Create Error");
         } else {
+          if (!option.includes("keep-login")) {
+            req.session.cookie.expires = false;
+          }
           req.session.user = {
-            uid: doc._id,
-            option
+            uid: doc._id
           };
           res.status(200).json({
             uid: doc._id,
@@ -81,13 +85,17 @@ router.post("/sign-up", async (req, res) => {
 router.post("/autologin", async (req, res) => {
   const userSession = req.session.user;
   if (userSession) {
-    if (userSession.option.includes("keep-login")) {
+    if (userSession.uid) {
       const doc = await user.findById(userSession.uid);
-      res.status(200).json({
-        uid: doc._id,
-        username: doc.username,
-        nickname: doc.nickname
-      });
+      if (doc) {
+        res.status(200).json({
+          uid: doc._id,
+          username: doc.username,
+          nickname: doc.nickname
+        });
+      } else {
+        res.status(401).send("找不到該用戶");
+      }
     } else {
       res.status(401).send("已登出，請重新登入");
     }
