@@ -9,8 +9,10 @@ const Product = new Schema(
   {
     // pid
     _id: Number,
+    // 產品類
+    product: { type: String, index: true },
     // 產品名
-    name: { type: [String], index: true },
+    name: String,
     // 使用者
     uid: Number,
     // 使用期限
