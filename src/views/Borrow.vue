@@ -4,7 +4,7 @@
 
     <template v-for="card in selection.status.list">
       <BorrowCard
-        v-if="card.deadline === 0"
+        v-if="card.uid === 0"
         :key="card.id"
         :title="selection.zhName"
         :img-src="selection.iconOn"
@@ -20,8 +20,13 @@
         :img-src="selection.iconOff"
         :img-alt="selection.key"
       >
-        <div>{{ card.user }}</div>
-        <div>{{ card.deadline }}</div>
+        <div>---</div>
+        <div v-if="card.deadline > Date.now()">
+          {{ new Date(card.deadline).format("yyyy/MM/dd") }}
+        </div>
+        <div v-else>
+          已到期未歸還
+        </div>
       </BorrowCard>
     </template>
     <b-button @click="addRandomData">
