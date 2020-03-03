@@ -4,14 +4,14 @@
 const path = "/user";
 const router = require("express").Router();
 
-const { user } = include("@/database");
+const { users } = include("@/database");
 
 // 下一個新用戶序列號
 let uid = 0;
 
 init(next => {
   // 初始化 uid
-  user.aggregate(
+  users.aggregate(
     [{ $group: { _id: null, max: { $max: "$_id" } } }],
     (err, res) => {
       if (res.length === 0) {
@@ -27,7 +27,7 @@ init(next => {
 // 用戶登入
 router.post("/login", async (req, res) => {
   const { username, password, option } = req.body;
-  const doc = await user.findOne({ username });
+  const doc = await users.findOne({ username });
   if (doc) {
     if (password === doc.password) {
       req.session.regenerate(err => {
@@ -71,7 +71,7 @@ router.post("/sign-up", async (req, res) => {
   const data = req.body;
   // TODO 正則驗證
   data._id = uid;
-  user.create(data, err => {
+  users.create(data, err => {
     if (err) {
       res.json({ code: 1, msg: err });
     } else {
@@ -86,7 +86,7 @@ router.post("/autologin", async (req, res) => {
   const userSession = req.session.user;
   if (userSession) {
     if (userSession.uid) {
-      const doc = await user.findById(userSession.uid);
+      const doc = await users.findById(userSession.uid);
       if (doc) {
         res.status(200).json({
           uid: doc._id,
