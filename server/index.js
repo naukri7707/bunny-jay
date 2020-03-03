@@ -27,8 +27,6 @@ routers.forEach(it => {
   app.use(it.path, it.router);
 });
 
-// TODO 在初始化時讀取全部產品剩餘數量並存成變數減少資料庫操作頻率
-
 // 啟動伺服器
 app.listen(port, err => {
   if (err) {
