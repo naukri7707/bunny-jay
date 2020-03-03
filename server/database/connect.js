@@ -10,7 +10,8 @@ mongoose.Promise = global.Promise;
 
 // 在dev狀態開啟調適模式 (在console log 顯示 Mongoose 操作)
 mongoose.set("debug", config.dev);
-
+// 新的索引建立方式
+mongoose.set("useCreateIndex", true);
 // 建立連結
 mongoose.connect(uri, {
   useNewUrlParser: true,

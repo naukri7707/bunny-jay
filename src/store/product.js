@@ -31,8 +31,14 @@ export default {
                 target
               }
             })
-            .then(res => {
-              state.selection.status = res.data;
+            .then(({ data }) => {
+              let remain = 0;
+              for (const p of data) {
+                if (p.uid === 0) {
+                  remain++;
+                }
+              }
+              state.selection.status = { remain, list: data };
               resolve();
             })
             .catch(err => {
@@ -42,40 +48,28 @@ export default {
       });
     },
     addRandomData(context) {
-      function randomID(length) {
-        const characters =
-          "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        let result = "";
-        var charactersLength = characters.length;
-        for (var i = 0; i < length; i++) {
-          result += characters.charAt(
-            Math.floor(Math.random() * charactersLength)
-          );
-        }
-        return result;
-      }
       const state = context.state;
-      const target = state.selection.key;
-      if (target in state.list) {
-        // 選擇產品
-        state.selection = state.list[target];
-        // 更新產品狀態
-        axios
-          .get("/product/addRandom", {
-            params: {
-              target,
-              user: randomID(7),
-              deadline: Date.now()
-            }
-          })
-          .then(({ data }) => {
-            alert(data.msg);
-            context.dispatch("selectProduct", target);
-          })
-          .catch(err => {
-            alert(`資料更新失敗\n\n${err}`);
-          });
-      }
+      const name = state.selection.key;
+      // 更新產品狀態
+      axios
+        .get("/product/addRandom", {
+          params: {
+            name,
+            uid: Math.floor(Math.random() * 100),
+            deadline: Date.now()
+          }
+        })
+        .then(({ data }) => {
+          if (name in state.list) {
+            // 選擇產品
+            state.selection = state.list[name];
+            context.dispatch("selectProduct", name);
+            alert(data);
+          }
+        })
+        .catch(err => {
+          alert(err.response.data);
+        });
     }
   }
 };

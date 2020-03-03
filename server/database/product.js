@@ -7,8 +7,12 @@ const Model = require("mongoose").model;
 /** 資料架構 */
 const Product = new Schema(
   {
+    // pid
+    _id: Number,
+    // 產品名
+    name: { type: [String], index: true },
     // 使用者
-    user: String,
+    uid: Number,
     // 使用期限
     deadline: Number
   },
@@ -19,13 +23,4 @@ const Product = new Schema(
 );
 
 // 匯出資料模型 (資料表)
-module.exports = {
-  key: new Model("key", Product),
-  camera: new Model("camera", Product),
-  tripod: new Model("tripod", Product),
-  laptop: new Model("laptop", Product),
-  pad: new Model("pad", Product),
-  arduino: new Model("arduino", Product),
-  vr: new Model("vr", Product),
-  drone: new Model("drone", Product)
-};
+module.exports = new Model("product", Product);
