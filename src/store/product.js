@@ -18,54 +18,61 @@ export default {
   },
   actions: {
     /** 更新產品狀態 */
-    selectProduct(context, target) {
+    selectProduct(context, product) {
       return new Promise((resolve, reject) => {
         const state = context.state;
-        if (target in state.list) {
-          // 選擇產品
-          state.selection = state.list[target];
-          // 更新產品狀態
-          axios
-            .get("/product/update", {
-              params: {
-                target
+        // 更新產品狀態
+        axios
+          .get("/product/update", {
+            params: {
+              product
+            }
+          })
+          .then(({ data }) => {
+            state.selection = state.list[product];
+            let remain = 0;
+            for (const p of data) {
+              if (p.uid === 0) {
+                remain++;
               }
-            })
-            .then(({ data }) => {
-              let remain = 0;
-              for (const p of data) {
-                if (p.uid === 0) {
-                  remain++;
-                }
-              }
-              state.selection.status = { remain, list: data };
-              resolve();
-            })
-            .catch(err => {
-              reject(err.response);
-            });
-        }
+            }
+            state.selection.status = { remain, list: data };
+            resolve();
+          })
+          .catch(err => {
+            reject(err.response);
+          });
       });
     },
     addRandomData(context) {
+      function randomID(length) {
+        const characters =
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        let result = "";
+        let charactersLength = characters.length;
+        for (let i = 0; i < length; i++) {
+          result += characters.charAt(
+            Math.floor(Math.random() * charactersLength)
+          );
+        }
+        return result;
+      }
       const state = context.state;
-      const name = state.selection.key;
+      const product = state.selection.key;
       // 更新產品狀態
       axios
         .get("/product/addRandom", {
           params: {
-            name,
+            product: product,
+            name: randomID(7),
             uid: Math.floor(Math.random() * 100),
             deadline: Date.now()
           }
         })
         .then(({ data }) => {
-          if (name in state.list) {
-            // 選擇產品
-            state.selection = state.list[name];
-            context.dispatch("selectProduct", name);
-            alert(data);
-          }
+          state.selection = state.list[product];
+          context.dispatch("selectProduct", product);
+          alert(data);
         })
         .catch(err => {
           alert(err.response.data);

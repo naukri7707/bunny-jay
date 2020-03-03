@@ -5,8 +5,8 @@
     <template v-for="card in selection.status.list">
       <BorrowCard
         v-if="card.uid === 0"
-        :key="card.id"
-        :title="selection.zhName"
+        :key="card._id"
+        :title="card.name"
         :img-src="selection.iconOn"
         :img-alt="selection.key"
       >
@@ -16,7 +16,7 @@
       <BorrowCard
         v-else
         :key="card.id"
-        :title="selection.zhName"
+        :title="card.name"
         :img-src="selection.iconOff"
         :img-alt="selection.key"
       >
