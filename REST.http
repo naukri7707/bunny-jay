@@ -24,3 +24,15 @@ content-type: application/json
     "password": "user1",
     "nickname": "user1"
 }
+
+### add-info
+
+POST http://localhost:8088/product/addInfo HTTP/1.1
+content-type: application/json
+ 
+{
+    "key": "key",
+    "name": "Key",
+    "zhName": "鑰匙",
+    "day": 0
+}
