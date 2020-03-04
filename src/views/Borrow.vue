@@ -1,34 +1,11 @@
 <template>
   <b-container id="borrow">
     <h1>Bunny Jay {{ selection.zhName }}</h1>
-
-    <template v-for="card in selection.status.list">
-      <BorrowCard
-        v-if="card.uid === 0"
-        :key="card._id"
-        :title="card.name"
-        :img-src="selection.iconOn"
-        :img-alt="selection.key"
-      >
-        <div>---</div>
-        <div>可預約</div>
-      </BorrowCard>
-      <BorrowCard
-        v-else
-        :key="card.id"
-        :title="card.name"
-        :img-src="selection.iconOff"
-        :img-alt="selection.key"
-      >
-        <div>---</div>
-        <div v-if="card.deadline > Date.now()">
-          {{ new Date(card.deadline).format("yyyy/MM/dd") }}
-        </div>
-        <div v-else>
-          已到期未歸還
-        </div>
-      </BorrowCard>
-    </template>
+    <BorrowCard
+      v-for="card in selection.status.list"
+      :key="card._id"
+      v-bind="card"
+    />
     <b-button @click="addRandomData">
       新增隨機資料
     </b-button>

@@ -1,8 +1,21 @@
 <template>
-  <b-card class="borrow-card" :img-src="imgSrc" :img-alt="imgAlt" img-top>
+  <b-card
+    class="borrow-card"
+    img-top
+    :img-src="uid ? productInfo.iconOff : productInfo.iconOn"
+    :img-alt="productInfo.key"
+    @click="borrow()"
+  >
     <div class="info">
-      <div>{{ title }}</div>
-      <slot></slot>
+      <div>{{ name }}</div>
+      <div>---</div>
+      <div v-if="uid === 0">可預約</div>
+      <div v-else-if="Date.now() < deadline">
+        {{ new Date(deadline).format("yyyy/MM/dd") }}
+      </div>
+      <div v-else>
+        已到期未歸還
+      </div>
     </div>
   </b-card>
 </template>
@@ -11,9 +24,21 @@
 export default {
   name: "BorrowCard",
   props: {
-    title: String,
-    imgSrc: String,
-    imgAlt: String
+    _id: Number,
+    product: String,
+    name: String,
+    uid: Number,
+    deadline: String
+  },
+  computed: {
+    productInfo() {
+      return this.$store.state.product.list[this.product];
+    }
+  },
+  methods: {
+    borrow() {
+      // TODO borrow
+    }
   }
 };
 </script>
