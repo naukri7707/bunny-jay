@@ -4,7 +4,7 @@
 const path = "/product";
 const router = require("express").Router();
 
-const { productInfos, products } = include("@/database");
+const { productsInfos, products } = include("@/database");
 
 // 下一個新產品序列號
 let pid = 0;
@@ -26,7 +26,7 @@ init(next => {
 
 // 取得產品資訊
 router.get("/info", async (req, res) => {
-  let doc = await productInfos.find({});
+  let doc = await productsInfos.find({});
   if (doc) {
     res.status(200).json(doc);
   } else {
@@ -37,19 +37,8 @@ router.get("/info", async (req, res) => {
 // 新增產品資訊
 router.post("/addInfo", (req, res) => {
   let data = req.body;
-  let pid = 0;
-  productInfos.aggregate(
-    [{ $group: { _id: null, max: { $max: "$_id" } } }],
-    (err, res) => {
-      if (res.length === 0) {
-        pid = 1;
-      } else {
-        pid = res[0].max + 1;
-      }
-    }
-  );
-  data._id = pid;
-  productInfos.create(data, err => {
+
+  productsInfos.create(data, err => {
     if (err) {
       res.status(500).send("新增失敗");
     } else {
@@ -66,6 +55,48 @@ router.get("/update", async (req, res) => {
     res.status(200).json(doc);
   } else {
     res.status(500).send("找不到資料");
+  }
+});
+
+// 租借產品
+router.get("/borrow", async (req, res) => {
+  const userSession = req.session.user;
+  const { pid } = req.query;
+  if (userSession) {
+    if (userSession.uid) {
+      let doc = await products.findById(pid);
+      if (doc) {
+        if (doc.uid === 0) {
+          let { day } = await productsInfos.findById(doc.product);
+          let deadline = new Date(
+            new Date().setDate(new Date().getDate() + 1 + day)
+          );
+          doc.uid = userSession.uid;
+          products.findByIdAndUpdate(
+            pid,
+            {
+              uid: userSession.uid,
+              deadline
+            },
+            (err, doc) => {
+              if (err) {
+                res.status(500).send("資料庫錯誤");
+              } else {
+                res.status(200).send(doc);
+              }
+            }
+          );
+        } else {
+          res.status(500).send("該產品已被租借");
+        }
+      } else {
+        res.status(500).send("找不到目標產品");
+      }
+    } else {
+      res.status(401).send("找不到該用戶");
+    }
+  } else {
+    res.status(401).send("請先登入");
   }
 });
 

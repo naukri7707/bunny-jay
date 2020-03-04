@@ -47,6 +47,23 @@ export default {
           });
       });
     },
+    // 租借產品
+    borrow(context, pid) {
+      return new Promise((resolve, reject) => {
+        axios
+          .get("/product/borrow", {
+            params: {
+              pid
+            }
+          })
+          .then(res => {
+            resolve(res);
+          })
+          .catch(err => {
+            reject(err.response);
+          });
+      });
+    },
     addRandomData(context) {
       function randomID(length) {
         const characters =
@@ -68,8 +85,8 @@ export default {
           params: {
             product: product,
             name: randomID(7),
-            uid: Math.floor(Math.random() * 100),
-            deadline: Date.now()
+            uid: 0,
+            deadline: 0
           }
         })
         .then(({ data }) => {

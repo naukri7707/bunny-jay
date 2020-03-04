@@ -37,7 +37,27 @@ export default {
   },
   methods: {
     borrow() {
-      // TODO borrow
+      if (this.uid === 0) {
+        this.$store.dispatch("product/borrow", this._id).then(
+          ({ data }) => {
+            this.toast(data, {
+              title: "租借成功",
+              variant: "danger"
+            });
+            // TODO 更新
+          },
+          ({ status, data }) => {
+            this.toast(data, {
+              title: `Error ${status}`,
+              variant: "danger"
+            });
+          }
+        );
+      } else {
+        this.toast("本產品已被租用", {
+          variant: "warning"
+        });
+      }
     }
   }
 };
