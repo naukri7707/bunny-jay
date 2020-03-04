@@ -12,6 +12,8 @@ mongoose.Promise = global.Promise;
 mongoose.set("debug", config.dev);
 // 新的索引建立方式
 mongoose.set("useCreateIndex", true);
+//
+mongoose.set("useFindAndModify", false);
 // 建立連結
 mongoose.connect(uri, {
   useNewUrlParser: true,
