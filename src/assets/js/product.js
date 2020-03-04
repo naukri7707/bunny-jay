@@ -5,6 +5,14 @@ export default class Product {
   /** 空產品 */
   static default = { status: { remain: -99, list: [] } };
 
+  static makeList(data) {
+    let res = {};
+    for (let d of data) {
+      res[d.key] = new Product(d.key, d.name, d.zhName, d.day);
+    }
+    return res;
+  }
+
   /**
    * @param {string} key 鍵值
    * @param {string} name 英文名
