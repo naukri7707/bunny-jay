@@ -31,6 +31,22 @@ Array.prototype.legalIndex = function(index) {
 };
 
 /**
+ * 陣列轉物件
+ * @param {string} keyField 要當成索引的欄位
+ * @param {string} removeKeyField 是否刪除被當成索引的欄位
+ */
+Array.prototype.objectify = function(keyField, removeKeyField = false) {
+  let res = {};
+  for (let value of this) {
+    res[value[keyField]] = value;
+    if (removeKeyField) {
+      delete value[keyField];
+    }
+  }
+  return res;
+};
+
+/**
  * 日期格式化工具
  * @param {string} fmt 格式
  */
