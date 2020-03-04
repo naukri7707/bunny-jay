@@ -8,7 +8,7 @@ export default class Product {
   static makeList(data) {
     let res = {};
     for (let d of data) {
-      res[d.key] = new Product(d.key, d.name, d.zhName, d.day);
+      res[d._id] = new Product(d._id, d.name, d.zhName, d.day);
     }
     return res;
   }

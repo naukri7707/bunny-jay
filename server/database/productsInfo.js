@@ -7,10 +7,8 @@ const Model = require("mongoose").model;
 /** 資料架構 */
 const ProductInfo = new Schema(
   {
-    // pid
-    _id: Number,
     // 關鍵字
-    key: String,
+    _id: String,
     // 英文名
     name: String,
     // 中文名
