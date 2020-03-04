@@ -25,14 +25,16 @@ export default {
     logout() {
       this.$store.dispatch("user/logout").then(
         nickname => {
-          this.toast("登出成功", `再見，${nickname}`, {
+          this.toast(`再見，${nickname}`, {
+            title: "登出成功",
             toaster: "TC",
             variant: "success"
           });
           this.$router.push("/user/login");
         },
         ({ status, data }) => {
-          this.toast(`Error ${status}`, data, {
+          this.toast(data, {
+            title: `Error ${status}`,
             toaster: "TC",
             variant: "danger"
           });

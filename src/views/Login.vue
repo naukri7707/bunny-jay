@@ -54,14 +54,16 @@ export default {
     onSubmit() {
       this.$store.dispatch("user/login", this.form).then(
         ({ data }) => {
-          this.toast("登入成功", `歡迎回來，${data.nickname}`, {
+          this.toast(`歡迎回來，${data.nickname}`, {
+            title: "登入成功",
             toaster: "TC",
             variant: "success"
           });
           this.$router.go(-1);
         },
         ({ status, data }) => {
-          this.toast(`Error ${status}`, data, {
+          this.toast(data, {
+            title: `Error ${status}`,
             toaster: "TC",
             variant: "danger"
           });

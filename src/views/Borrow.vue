@@ -54,7 +54,8 @@ export default {
       this.$store.dispatch("product/selectProduct", target).then(
         () => {},
         ({ status, data }) => {
-          this.toast(`Error ${status}`, data, {
+          this.toast(data, {
+            title: `Error ${status}`,
             toaster: "TR",
             variant: "danger"
           });
