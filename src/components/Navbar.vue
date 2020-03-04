@@ -27,7 +27,6 @@ export default {
         nickname => {
           this.toast(`再見，${nickname}`, {
             title: "登出成功",
-            toaster: "TC",
             variant: "success"
           });
           this.$router.push("/user/login");
@@ -35,7 +34,6 @@ export default {
         ({ status, data }) => {
           this.toast(data, {
             title: `Error ${status}`,
-            toaster: "TC",
             variant: "danger"
           });
           this.$router.go(0);

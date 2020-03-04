@@ -33,7 +33,6 @@ export default {
         ({ status, data }) => {
           this.toast(data, {
             title: `Error ${status}`,
-            toaster: "TR",
             variant: "danger"
           });
         }

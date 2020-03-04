@@ -56,7 +56,6 @@ export default {
         ({ data }) => {
           this.toast(`歡迎回來，${data.nickname}`, {
             title: "登入成功",
-            toaster: "TC",
             variant: "success"
           });
           this.$router.go(-1);
@@ -64,7 +63,6 @@ export default {
         ({ status, data }) => {
           this.toast(data, {
             title: `Error ${status}`,
-            toaster: "TC",
             variant: "danger"
           });
         }

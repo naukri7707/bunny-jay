@@ -1,5 +1,6 @@
 // 預設的 toast 選項
 const DEFAULT_OPTION = {
+  toaster: "TC",
   solid: true
 };
 
