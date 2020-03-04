@@ -40,11 +40,20 @@ export default {
       if (this.uid === 0) {
         this.$store.dispatch("product/borrow", this._id).then(
           ({ data }) => {
-            this.toast(data, {
+            let { name, uid, deadline } = data;
+            let msg =
+              deadline - Date.now() < 24 * 60 * 60 * 1000
+                ? `您已成功預借「${name}」，請在當天歸還。`
+                : `您已成功預借「${name}」，請於${new Date(deadline).format(
+                    "yyyy/MM/dd"
+                  )}放學前歸還。`;
+
+            this.toast(msg, {
               title: "租借成功",
-              variant: "danger"
+              variant: "success"
             });
-            // TODO 更新
+            this.uid = uid;
+            this.deadline = deadline;
           },
           ({ status, data }) => {
             this.toast(data, {

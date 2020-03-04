@@ -69,7 +69,7 @@ router.get("/borrow", async (req, res) => {
         if (doc.uid === 0) {
           let { day } = await productsInfos.findById(doc.product);
           let deadline = new Date(
-            new Date().setDate(new Date().getDate() + 1 + day)
+            new Date().setDate(new Date().getDate() + day)
           );
           doc.uid = userSession.uid;
           products.findByIdAndUpdate(
@@ -78,6 +78,7 @@ router.get("/borrow", async (req, res) => {
               uid: userSession.uid,
               deadline
             },
+            { new: true },
             (err, doc) => {
               if (err) {
                 res.status(500).send("資料庫錯誤");
