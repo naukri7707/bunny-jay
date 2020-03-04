@@ -31,7 +31,7 @@ POST http://localhost:8088/product/addInfo HTTP/1.1
 content-type: application/json
  
 {
-    "key": "key",
+    "_id": "key",
     "name": "Key",
     "zhName": "鑰匙",
     "day": 0
