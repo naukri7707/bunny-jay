@@ -4,7 +4,7 @@
 const path = "/product";
 const router = require("express").Router();
 
-const { productsInfos, products } = include("@/database");
+const { users, productsInfos, products } = include("@/database");
 
 // 下一個新產品序列號
 let pid = 0;
@@ -52,9 +52,37 @@ router.post("/addInfo", (req, res) => {
 router.get("/update", async (req, res) => {
   let doc = await products.find({ product: req.query.product });
   if (doc) {
+    let doc = await products.find({ product: req.query.product });
     res.status(200).json(doc);
   } else {
     res.status(500).send("找不到資料");
+  }
+});
+
+// 取得指定產品資訊
+router.get("/status", async (req, res) => {
+  let pid = parseInt(req.query.pid);
+  let product = await products.findById(pid, err => {
+    if (err) {
+      res.status(500).send("資料庫錯誤");
+      return;
+    }
+  });
+  if (product === null) {
+    res.status(500).send("查無此產品");
+    return;
+  }
+  let user = await users.findById(product.uid, err => {
+    if (err) {
+      res.status(500).send("資料庫錯誤");
+      return;
+    }
+  });
+  if (user === null) {
+    res.status(500).send("查無此用戶");
+  } else {
+    let { username, nickname } = user;
+    res.status(200).json({ username, nickname });
   }
 });
 
@@ -68,25 +96,17 @@ router.get("/borrow", async (req, res) => {
       if (doc) {
         if (doc.uid === 0) {
           let { day } = await productsInfos.findById(doc.product);
-          let deadline = new Date(
-            new Date().setDate(new Date().getDate() + day)
-          );
-          doc.uid = userSession.uid;
-          products.findByIdAndUpdate(
-            pid,
-            {
-              uid: userSession.uid,
-              deadline
-            },
-            { new: true },
-            (err, doc) => {
-              if (err) {
-                res.status(500).send("資料庫錯誤");
-              } else {
-                res.status(200).send(doc);
-              }
+          let data = {
+            uid: userSession.uid,
+            deadline: new Date(new Date().setDate(new Date().getDate() + day))
+          };
+          products.findByIdAndUpdate(pid, data, { new: true }, err => {
+            if (err) {
+              res.status(500).send("資料庫錯誤");
+            } else {
+              res.status(200).json(data);
             }
-          );
+          });
         } else {
           res.status(500).send("該產品已被租借");
         }

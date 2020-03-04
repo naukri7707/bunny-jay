@@ -40,13 +40,13 @@ export default {
       if (this.uid === 0) {
         this.$store.dispatch("product/borrow", this._id).then(
           ({ data }) => {
-            let { name, uid, deadline } = data;
+            let { uid, deadline } = data;
             let msg =
               deadline - Date.now() < 24 * 60 * 60 * 1000
-                ? `您已成功預借「${name}」，請在當天歸還。`
-                : `您已成功預借「${name}」，請於${new Date(deadline).format(
-                    "yyyy/MM/dd"
-                  )}放學前歸還。`;
+                ? `您已成功預借「${this.name}」，請在當天歸還。`
+                : `您已成功預借「${this.name}」，請於${new Date(
+                    deadline
+                  ).format("yyyy/MM/dd")}放學前歸還。`;
 
             this.toast(msg, {
               title: "租借成功",
@@ -54,6 +54,26 @@ export default {
             });
             this.uid = uid;
             this.deadline = deadline;
+            // TODO 更新側邊欄
+          },
+          ({ status, data }) => {
+            this.toast(data, {
+              title: `Error ${status}`,
+              variant: "danger"
+            });
+            if (status === 401) {
+              this.$router.push("/user/login");
+            }
+          }
+        );
+      } else {
+        this.$store.dispatch("product/getStatus", this._id).then(
+          ({ data }) => {
+            let { username, nickname } = data;
+            this.toast(`「${this.name}」已被 ${nickname}(${username}) 租用`, {
+              title: "無法預借",
+              variant: "warning"
+            });
           },
           ({ status, data }) => {
             this.toast(data, {
@@ -62,10 +82,6 @@ export default {
             });
           }
         );
-      } else {
-        this.toast("本產品已被租用", {
-          variant: "warning"
-        });
       }
     }
   }

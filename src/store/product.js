@@ -64,6 +64,22 @@ export default {
           });
       });
     },
+    getStatus(context, pid) {
+      return new Promise((resolve, reject) => {
+        axios
+          .get("/product/status", {
+            params: {
+              pid
+            }
+          })
+          .then(res => {
+            resolve(res);
+          })
+          .catch(err => {
+            reject(err.response);
+          });
+      });
+    },
     addRandomData(context) {
       function randomID(length) {
         const characters =
