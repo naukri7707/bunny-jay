@@ -5,23 +5,26 @@ export default {
   namespaced: true,
   state: {
     selection: Product.default,
-    list: {
-      key: new Product("key", "Key", "鑰匙", 0),
-      camera: new Product("camera", "Camera", "相機", 3),
-      tripod: new Product("tripod", "Tripod", "腳架", 3),
-      laptop: new Product("laptop", "Laptop", "筆記型電腦", 0),
-      pad: new Product("pad", "Pad", "平板電腦", 3),
-      arduino: new Product("arduino", "Arduino", "Arduino", 3),
-      vr: new Product("vr", "VR headset", "VR 頭戴裝置", 3),
-      drone: new Product("drone", "Drone", "空拍機", 3)
-    }
+    list: {}
   },
   actions: {
-    /** 更新產品狀態 */
-    selectProduct(context, product) {
+    // 取得產品資訊
+    getInfo({ state }) {
       return new Promise((resolve, reject) => {
-        const state = context.state;
-        // 更新產品狀態
+        axios
+          .get("/product/info")
+          .then(({ data }) => {
+            state.list = Product.makeList(data);
+            resolve();
+          })
+          .catch(err => {
+            reject(err.response);
+          });
+      });
+    },
+    // 更新產品狀態
+    selectProduct({ state }, product) {
+      return new Promise((resolve, reject) => {
         axios
           .get("/product/update", {
             params: {

@@ -10,7 +10,7 @@
       <b-nav vertical>
         <b-nav-item>
           <SidebarCard
-            v-for="product in $store.state.product.list"
+            v-for="product in productList"
             :key="product.key"
             :to="`/borrow/${product.key}`"
           >
@@ -58,10 +58,23 @@ export default {
       set(value) {
         this.$store.state.sidebar.hidden = value;
       }
+    },
+    productList() {
+      return this.$store.state.product.list;
     }
   },
   created() {
     this.hidden = Responsive.windowWidth["=="]("XS");
+    this.$store.dispatch("product/getInfo").then(
+      () => {},
+      ({ status, data }) => {
+        this.toast(data, {
+          title: `Error ${status}`,
+          toaster: "TR",
+          variant: "danger"
+        });
+      }
+    );
   }
 };
 </script>
