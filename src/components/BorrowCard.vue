@@ -10,7 +10,7 @@
       <div>{{ name }}</div>
       <div>---</div>
       <div v-if="uid === 0">可預約</div>
-      <div v-else-if="Date.now() < deadline">
+      <div v-else-if="Date.now() < deadline + 86400000">
         {{ new Date(deadline).format("yyyy/MM/dd") }}
       </div>
       <div v-else>
@@ -54,7 +54,7 @@ export default {
             });
             this.uid = uid;
             this.deadline = deadline;
-            // TODO 更新側邊欄
+            this.$store.state.product.list[this.product].status.remain--;
           },
           ({ status, data }) => {
             this.toast(data, {
