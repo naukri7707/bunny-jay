@@ -4,7 +4,8 @@ require("./unitity");
 const express = require("express"); // 伺服器
 const session = require("express-session"); // session
 const bodyParser = require("body-parser"); // 請求解析
-require("./database/connect.js"); // 連結至資料庫
+require("./asyncRouter").init(); // 異步路由異常處理工具
+require("./database/connect"); // 連結至資料庫
 const { port, dist } = config.app; // 設定檔
 const routers = require("./router"); // 路由
 /** 連線物件 */
@@ -22,6 +23,7 @@ app.use(
     cookie: { maxAge: EXPIRES }
   })
 );
+
 // routers
 routers.forEach(it => {
   app.use(it.path, it.router);
