@@ -9,20 +9,28 @@ const { users, productsInfos, products } = include("@/database");
 // 下一個新產品序列號
 let pid = 0;
 
-init(next => {
-  // 初始化 pid
-  products.aggregate(
-    [{ $group: { _id: null, max: { $max: "$_id" } } }],
-    (err, res) => {
-      if (res.length === 0) {
-        pid = 1;
-      } else {
-        pid = res[0].max + 1;
+init(
+  next => {
+    Date.today = offset => {
+      return new Date().setHours(0, 0, 0, 0) + 86400000 * offset;
+    };
+    next();
+  },
+  next => {
+    // 初始化 pid
+    products.aggregate(
+      [{ $group: { _id: null, max: { $max: "$_id" } } }],
+      (err, res) => {
+        if (res.length === 0) {
+          pid = 1;
+        } else {
+          pid = res[0].max + 1;
+        }
+        next();
       }
-      next();
-    }
-  );
-});
+    );
+  }
+);
 
 // 取得產品資訊
 router.get("/info", async (req, res) => {
@@ -98,7 +106,7 @@ router.get("/borrow", async (req, res) => {
           let { day } = await productsInfos.findById(doc.product);
           let data = {
             uid: userSession.uid,
-            deadline: new Date(new Date().setDate(new Date().getDate() + day))
+            deadline: Date.today(day)
           };
           products.findByIdAndUpdate(pid, data, { new: true }, err => {
             if (err) {
