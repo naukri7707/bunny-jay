@@ -5,7 +5,8 @@ export default {
   namespaced: true,
   state: {
     selection: Product.default,
-    list: {}
+    list: {},
+    userBorrowList: []
   },
   actions: {
     // 取得產品資訊
@@ -78,6 +79,12 @@ export default {
           .catch(err => {
             reject(err.response);
           });
+      });
+    },
+    /** 取得使用者借閱狀態 */
+    getBorrowList({ state }) {
+      axios.get("/product/borrow-list").then(({ data }) => {
+        state.userBorrowList = data;
       });
     },
     addRandomData(context) {
