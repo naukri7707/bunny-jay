@@ -66,9 +66,4 @@ $title-color: white;
     }
   }
 }
-
-//    border-color: #ededed;
-//  .deadline {
-//       color: red;
-//     }
 </style>
