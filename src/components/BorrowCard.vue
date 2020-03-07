@@ -54,7 +54,7 @@ export default {
             let msg = this.isExpired
               ? `您已成功預借「${this.name}」，請在當天放學前歸還。`
               : `您已成功預借「${this.name}」，
-              請於${this.deadDate()}}放學前歸還。`;
+              請於${this.deadDate}}放學前歸還。`;
 
             this.toast(msg, {
               title: "租借成功",
