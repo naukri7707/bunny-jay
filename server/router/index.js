@@ -8,12 +8,12 @@ const indexRouter = { path, router };
 const devRouter = require("./dev.js");
 const userRouter = require("./user.js");
 const productRouter = require("./product.js");
-const redirectRouter = require("./redirect.js");
+const handlerRouter = require("./handler.js");
 
 module.exports = [
   indexRouter,
   devRouter,
   userRouter,
   productRouter,
-  redirectRouter
+  handlerRouter
 ];

@@ -92,11 +92,6 @@ router.postAsync("/auto-login", async (req, res) => {
   }
 });
 
-// 異常處理
-router.use((err, req, res) => {
-  res.status(500).send(err.message);
-});
-
 module.exports = {
   path,
   router
