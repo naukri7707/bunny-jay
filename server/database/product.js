@@ -14,7 +14,7 @@ const Product = new Schema(
     // 產品名
     name: String,
     // 使用者
-    uid: Number,
+    uid: { type: Number, index: true },
     // 使用期限
     deadline: Number
   },
