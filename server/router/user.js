@@ -2,8 +2,7 @@
  * 使用者路由
  */
 const path = "/user";
-const router = require("express").Router();
-
+const router = require("express").AsyncRouter();
 const { users } = include("@/database");
 
 // 下一個新用戶序列號
@@ -25,49 +24,46 @@ init(next => {
 });
 
 // 用戶登入
-router.post("/login", async (req, res) => {
+router.postAsync("/login", async (req, res) => {
   const { username, password, option } = req.body;
-  const doc = await users.findOne({ username });
-  if (doc) {
-    if (password === doc.password) {
-      req.session.regenerate(err => {
-        if (err) {
-          res.status(500).send("Session Create Error");
-        } else {
-          if (!option.includes("keep-login")) {
-            req.session.cookie.expires = false;
-          }
-          req.session.user = {
-            uid: doc._id
-          };
-          res.status(200).json({
-            uid: doc._id,
-            username: doc.username,
-            nickname: doc.nickname
-          });
-        }
-      });
-    } else {
-      res.status(401).send("密碼錯誤");
-    }
+  const user = await users.findOne({ username });
+  if (user === null) {
+    res.status(404).send("無此帳號");
+  } else if (password !== user.password) {
+    res.status(401).send("密碼錯誤");
   } else {
-    res.status(401).send("無此帳號");
+    req.session.regenerate(err => {
+      if (err) {
+        res.status(500).send("Session Create Error");
+      } else {
+        // 不保持登入狀態 (使用者關閉瀏覽器後自動刪除客戶端 cookie 的 seesionID)
+        if (!option.includes("keep-login")) {
+          req.session.cookie.expires = false;
+        }
+        req.session.uid = user._id;
+        res.status(200).send(user.nickname);
+      }
+    });
   }
 });
 
 // 用戶登出
-router.post("/logout", async (req, res) => {
-  req.session.destroy(err => {
-    if (err) {
-      res.status(500).send("Session Destroy Error");
-    } else {
-      res.status(200).send("登出完成");
-    }
-  });
+router.post("/logout", (req, res) => {
+  if (req.session.uid === undefined) {
+    res.status(401).send("尚未登入");
+  } else {
+    req.session.destroy(err => {
+      if (err) {
+        res.status(500).send("Session Destroy Error");
+      } else {
+        res.status(204).end();
+      }
+    });
+  }
 });
 
 // 用戶註冊
-router.post("/sign-up", async (req, res) => {
+router.post("/sign-up", (req, res) => {
   const data = req.body;
   // TODO 正則驗證
   data._id = uid;
@@ -82,26 +78,23 @@ router.post("/sign-up", async (req, res) => {
 });
 
 // 自動登入
-router.post("/autologin", async (req, res) => {
-  const userSession = req.session.user;
-  if (userSession) {
-    if (userSession.uid) {
-      const doc = await users.findById(userSession.uid);
-      if (doc) {
-        res.status(200).json({
-          uid: doc._id,
-          username: doc.username,
-          nickname: doc.nickname
-        });
-      } else {
-        res.status(401).send("找不到該用戶");
-      }
-    } else {
-      res.status(401).send("已登出，請重新登入");
-    }
+router.postAsync("/auto-login", async (req, res) => {
+  const { uid } = req.session;
+  if (uid === undefined) {
+    res.status(401).send("已登出，請重新登入");
   } else {
-    res.status(401).send("沒有用戶資訊");
+    const user = await users.findById(uid);
+    if (user === null) {
+      res.status(404).send("找不到該用戶");
+    } else {
+      res.status(200).send(user.nickname);
+    }
   }
+});
+
+// 異常處理
+router.use((err, req, res) => {
+  res.status(500).send(err.message);
 });
 
 module.exports = {

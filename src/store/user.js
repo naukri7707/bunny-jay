@@ -4,8 +4,6 @@ export default {
   namespaced: true,
   state: {
     login: false,
-    uid: "",
-    username: "",
     nickname: ""
   },
   actions: {
@@ -15,7 +13,7 @@ export default {
         axios
           .post("/user/login", data)
           .then(res => {
-            state = Object.assign(state, res.data);
+            state.nickname = res.data;
             state.login = true;
             resolve(res);
           })
@@ -30,11 +28,7 @@ export default {
           .post("/user/logout")
           .then(() => {
             let res = state.nickname;
-            state = Object.assign(state, {
-              uid: "",
-              username: "",
-              nickname: ""
-            });
+            state.nickname = "";
             state.login = false;
             resolve(res);
           })
@@ -45,8 +39,8 @@ export default {
     },
     /** 自動登入 */
     autologin({ state }) {
-      axios.post("/user/autologin").then(({ data }) => {
-        state = Object.assign(state, data);
+      axios.post("/user/auto-login").then(({ data }) => {
+        state.nickname = data;
         state.login = true;
       });
     }
