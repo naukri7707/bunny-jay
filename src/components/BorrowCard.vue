@@ -43,7 +43,7 @@ export default {
             let { uid, deadline } = data;
             let msg =
               deadline - Date.now() < 24 * 60 * 60 * 1000
-                ? `您已成功預借「${this.name}」，請在當天歸還。`
+                ? `您已成功預借「${this.name}」，請在當天放學前歸還。`
                 : `您已成功預借「${this.name}」，請於${new Date(
                     deadline
                   ).format("yyyy/MM/dd")}放學前歸還。`;
