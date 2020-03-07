@@ -2,7 +2,7 @@
  * 產品路由
  */
 const path = "/product";
-const router = require("express").Router();
+const router = require("express").AsyncRouter();
 
 const { users, productsInfos, products } = include("@/database");
 
@@ -33,61 +33,47 @@ init(
 );
 
 // 取得產品資訊
-router.get("/info", async (req, res) => {
-  let doc = await productsInfos.find({});
-  if (doc) {
-    res.status(200).json(doc);
+router.getAsync("/info", async (req, res) => {
+  let infos = await productsInfos.find();
+  if (infos === null) {
+    res.status(404).send("找不到資料");
   } else {
-    res.status(500).send("找不到資料");
+    res.status(200).json(infos);
   }
 });
 
 // 新增產品資訊
-router.post("/addInfo", (req, res) => {
-  let data = req.body;
-
-  productsInfos.create(data, err => {
+router.post("/add-info", (req, res) => {
+  productsInfos.create(req.body, err => {
     if (err) {
       res.status(500).send("新增失敗");
     } else {
-      pid++;
-      res.status(200).send("新增成功");
+      res.status(201).send("新增成功");
     }
   });
 });
 
 // 更新產品狀態
-router.get("/update", async (req, res) => {
-  let doc = await products.find({ product: req.query.product });
-  if (doc) {
-    let doc = await products.find({ product: req.query.product });
-    res.status(200).json(doc);
+router.getAsync("/update", async (req, res) => {
+  let product = await products.find({ product: req.query.product });
+  if (product === null) {
+    res.status(404).send("找不到資料");
   } else {
-    res.status(500).send("找不到資料");
+    res.status(200).json(product);
   }
 });
 
 // 取得指定產品資訊
-router.get("/status", async (req, res) => {
+router.getAsync("/status", async (req, res) => {
   let pid = parseInt(req.query.pid);
-  let product = await products.findById(pid, err => {
-    if (err) {
-      res.status(500).send("資料庫錯誤");
-      return;
-    }
-  });
+  let product = await products.findById(pid);
   if (product === null) {
-    res.status(500).send("查無此產品");
+    res.status(404).send("查無此產品");
     return;
   }
-  let user = await users.findById(product.uid, err => {
-    if (err) {
-      res.status(500).send("資料庫錯誤");
-      return;
-    }
-  });
+  let user = await users.findById(product.uid);
   if (user === null) {
-    res.status(500).send("查無此用戶");
+    res.status(404).send("查無此用戶");
   } else {
     let { username, nickname } = user;
     res.status(200).json({ username, nickname });
@@ -95,38 +81,40 @@ router.get("/status", async (req, res) => {
 });
 
 // 租借產品
-router.get("/borrow", async (req, res) => {
-  const userSession = req.session.user;
+router.getAsync("/borrow", async (req, res) => {
+  const { uid } = req.session;
   const { pid } = req.query;
-  if (userSession) {
-    if (userSession.uid) {
-      let doc = await products.findById(pid);
-      if (doc) {
-        if (doc.uid === 0) {
-          let { day } = await productsInfos.findById(doc.product);
-          let data = {
-            uid: userSession.uid,
-            deadline: Date.today(day)
-          };
-          products.findByIdAndUpdate(pid, data, { new: true }, err => {
-            if (err) {
-              res.status(500).send("資料庫錯誤");
-            } else {
-              res.status(200).json(data);
-            }
-          });
-        } else {
-          res.status(500).send("該產品已被租借");
-        }
-      } else {
-        res.status(500).send("找不到目標產品");
-      }
-    } else {
-      res.status(401).send("找不到該用戶");
-    }
+  if (uid === undefined) {
+    res.status(401).send("請先登入");
+    return;
+  }
+  let doc = await products.findById(pid);
+  if (doc === null) {
+    res.status(500).send("找不到目標產品");
+    return;
+  }
+  if (doc.uid !== 0) {
+    res.status(500).send("該產品已被租借");
   } else {
+    let { day } = await productsInfos.findById(doc.product);
+    let data = {
+      uid,
+      deadline: Date.today(day)
+    };
+    // ?? await ?
+    await products.findByIdAndUpdate(pid, data);
+    res.status(200).json(data);
+  }
+});
+
+// 取得使用者租借狀態
+router.getAsync("/borrow-list", async (req, res) => {
+  const { uid } = req.session;
+  if (uid === undefined) {
     res.status(401).send("請先登入");
   }
+  const status = await products.find({ uid });
+  res.status(200).json(status);
 });
 
 // 新增隨機資料
