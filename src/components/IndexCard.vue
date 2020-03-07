@@ -11,11 +11,23 @@
     <div class="info">
       <div class="title">{{ name }} 借用中</div>
       <p>
-        {{ productInfo.zhName }}
-
-        可租用天數為 {{ productInfo.day }}天，您已經使用了2天，若要再度預借可以
+        <span>from {{ new Date(borrowTime).format("yyyy-MM-dd") }} </span>
+        <span v-if="remainDay === 0">今天到期</span>
+        <span v-else>剩餘{{ remainDay }}天</span>
       </p>
-      <router-link :to="`borrow/${product}`">快速預借 &gt;</router-link>
+      <p>
+        <template v-if="productInfo.day">
+          <div>
+            {{ productInfo.zhName }}可租用天數為{{
+              productInfo.day
+            }}天，您已經使用了{{ useDay }}天，若要再度預借可以
+          </div>
+          <router-link :to="`borrow/${product}`">快速預借 &gt;</router-link>
+        </template>
+        <template v-else>
+          <div>{{ productInfo.zhName }}需當天歸還</div>
+        </template>
+      </p>
     </div>
   </b-row>
 </template>
@@ -33,6 +45,12 @@ export default {
   computed: {
     productInfo() {
       return this.$store.state.product.list[this.product];
+    },
+    useDay() {
+      return parseInt((Date.now() - this.borrowTime) / Date.timeOfDay);
+    },
+    remainDay() {
+      return this.productInfo.day - this.useDay;
     }
   }
 };
