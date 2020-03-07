@@ -73,3 +73,8 @@ Date.prototype.format = function(fmt) {
       );
   return fmt;
 };
+
+/**
+ * 一天的時間 (ms)
+ */
+Date.timeOfDay = 86400000;
