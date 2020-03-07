@@ -1,6 +1,6 @@
 <template>
   <b-container id="login">
-    <h1>LOGIN {{ username }}</h1>
+    <h1>LOGIN</h1>
     <b-row>
       <b-form @submit.prevent="onSubmit" @cancel="onCancel">
         <b-input-group class="mb-3">
