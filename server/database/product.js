@@ -15,8 +15,8 @@ const Product = new Schema(
     name: String,
     // 使用者
     uid: { type: Number, index: true },
-    // 使用期限
-    deadline: Number
+    // 借用時間 (當天 0 時 0 分)
+    borrowTime: Number
   },
   {
     // 不儲存版本號

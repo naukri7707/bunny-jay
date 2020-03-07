@@ -10,12 +10,8 @@
       <div>{{ name }}</div>
       <div>---</div>
       <div v-if="uid === 0">可預約</div>
-      <div v-else-if="Date.now() < deadline + 86400000">
-        {{ new Date(deadline).format("yyyy/MM/dd") }}
-      </div>
-      <div v-else>
-        已到期未歸還
-      </div>
+      <div v-else-if="isExpired">已到期未歸還</div>
+      <div v-else>{{ deadDate }}</div>
     </div>
   </b-card>
 </template>
@@ -28,11 +24,24 @@ export default {
     product: String,
     name: String,
     uid: Number,
-    deadline: String
+    borrowTime: Number
   },
   computed: {
+    /** 產品資訊 */
     productInfo() {
       return this.$store.state.product.list[this.product];
+    },
+    /** 到期時間 (ms) */
+    deadline() {
+      return this.borrowTime + this.productInfo.day * Date.timeOfDay;
+    },
+    /** 格式化後的到期日 */
+    deadDate() {
+      return new Date(this.deadline).format("yyyy/MM/dd");
+    },
+    /** 是否過期 */
+    isExpired() {
+      return Date.now() >= this.deadline + Date.timeOfDay;
     }
   },
   methods: {
@@ -40,20 +49,18 @@ export default {
       if (this.uid === 0) {
         this.$store.dispatch("product/borrow", this._id).then(
           ({ data }) => {
-            let { uid, deadline } = data;
-            let msg =
-              deadline - Date.now() < 24 * 60 * 60 * 1000
-                ? `您已成功預借「${this.name}」，請在當天放學前歸還。`
-                : `您已成功預借「${this.name}」，請於${new Date(
-                    deadline
-                  ).format("yyyy/MM/dd")}放學前歸還。`;
+            this.uid = data.uid;
+            this.borrowTime = data.borrowTime;
+            let msg = this.isExpired
+              ? `您已成功預借「${this.name}」，請在當天放學前歸還。`
+              : `您已成功預借「${this.name}」，
+              請於${this.deadDate()}}放學前歸還。`;
 
             this.toast(msg, {
               title: "租借成功",
               variant: "success"
             });
-            this.uid = uid;
-            this.deadline = deadline;
+
             this.$store.state.product.list[this.product].status.remain--;
           },
           ({ status, data }) => {

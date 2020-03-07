@@ -11,7 +11,7 @@ let pid = 0;
 
 init(
   next => {
-    Date.today = offset => {
+    Date.today = (offset = 0) => {
       return new Date().setHours(0, 0, 0, 0) + 86400000 * offset;
     };
     next();
@@ -96,12 +96,7 @@ router.getAsync("/borrow", async (req, res) => {
   if (doc.uid !== 0) {
     res.status(500).send("該產品已被租借");
   } else {
-    let { day } = await productsInfos.findById(doc.product);
-    let data = {
-      uid,
-      deadline: Date.today(day)
-    };
-    // ?? await ?
+    let data = { uid, borrowTime: Date.today() };
     await products.findByIdAndUpdate(pid, data);
     res.status(200).json(data);
   }

@@ -102,14 +102,13 @@ export default {
       }
       const state = context.state;
       const product = state.selection.key;
-      // 更新產品狀態
       axios
         .get("/product/addRandom", {
           params: {
             product: product,
             name: randomID(7),
             uid: 0,
-            deadline: 0
+            borrowTime: 0
           }
         })
         .then(({ data }) => {

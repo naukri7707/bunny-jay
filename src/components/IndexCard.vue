@@ -28,7 +28,7 @@ export default {
     product: String,
     name: String,
     uid: Number,
-    deadline: String
+    borrowTime: Number
   },
   computed: {
     productInfo() {
