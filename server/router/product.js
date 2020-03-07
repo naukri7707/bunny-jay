@@ -107,6 +107,7 @@ router.getAsync("/borrow-list", async (req, res) => {
   const { uid } = req.session;
   if (uid === undefined) {
     res.status(401).send("請先登入");
+    return;
   }
   const status = await products.find({ uid });
   res.status(200).json(status);
