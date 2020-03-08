@@ -34,6 +34,10 @@ export default class Product {
   get background() {
     return require(`@/${Product.imgUrl}/${this.key}_bg.png`);
   }
+  /** 圖示 */
+  get icon() {
+    return require(`@/${Product.imgUrl}/${this.key}_icon.png`);
+  }
 
   /** 可租借圖示 */
   get iconOn() {

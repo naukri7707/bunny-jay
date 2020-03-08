@@ -3,7 +3,7 @@
     <b-img
       ref="icon"
       class="icon"
-      :src="productInfo.iconSide"
+      :src="productInfo.icon"
       rounded="circle"
       :alt="name"
     >
