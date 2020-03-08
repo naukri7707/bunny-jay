@@ -1,8 +1,6 @@
 <template>
-  <b-card class="sidebar-card">
-    <b-link :to="to">
-      <slot></slot>
-    </b-link>
+  <b-card class="sidebar-card" tag="router-link" :to="to">
+    <slot></slot>
   </b-card>
 </template>
 
