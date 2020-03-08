@@ -1,15 +1,12 @@
 // 按鈕化
 @mixin buttonify {
   cursor: pointer;
-  text-decoration: none;
+  color: unset !important;
+  text-decoration: none !important;
   user-select: none;
+  -webkit-user-drag: none;
 
-  img,
-  a {
+  * {
     -webkit-user-drag: none;
-  }
-
-  :hover {
-    text-decoration: none;
   }
 }
