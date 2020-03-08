@@ -27,7 +27,7 @@ content-type: application/json
 
 ### add-info
 
-POST http://localhost:8088/product/addInfo HTTP/1.1
+POST http://localhost:8088/product/add-info HTTP/1.1
 content-type: application/json
  
 {
@@ -36,3 +36,7 @@ content-type: application/json
     "zhName": "鑰匙",
     "day": 0
 }
+
+### get status 
+
+GET http://localhost:8088/product/status?pid=9 HTTP/1.1
