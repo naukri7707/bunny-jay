@@ -22,7 +22,7 @@
               productInfo.day
             }}天，您已經使用了{{ useDay }}天，若要再度預借可以
           </div>
-          <router-link :to="`borrow/${product}`">快速預借 &gt;</router-link>
+          <router-link :to="`product/${product}`">快速預借 &gt;</router-link>
         </template>
         <template v-else>
           <div>{{ productInfo.zhName }}需當天歸還</div>
