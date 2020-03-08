@@ -55,7 +55,7 @@ export default {
     onSubmit() {
       this.$store.dispatch("user/login", this.form).then(
         ({ data }) => {
-          this.toast(`歡迎回來，${data}`, {
+          this.toast(`歡迎回來，${data.nickname}`, {
             title: "登入成功",
             variant: "success"
           });

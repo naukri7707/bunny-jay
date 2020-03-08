@@ -41,11 +41,11 @@ export default {
     },
     /** 格式化後的到期日 */
     deadDate() {
-      return new Date(this.product.deadline).format("yyyy/MM/dd");
+      return new Date(this.deadline).format("yyyy/MM/dd");
     },
     /** 是否過期 */
     isExpired() {
-      return Date.now() >= this.product.deadline + Date.timeOfDay;
+      return Date.now() >= this.deadline + Date.timeOfDay;
     }
   },
   created() {
@@ -77,14 +77,14 @@ export default {
             let msg = this.isExpired
               ? `您已成功預借「${product.name}」，請在當天放學前歸還。`
               : `您已成功預借「${product.name}」，
-              請於${product.deadDate}}放學前歸還。`;
+              請於${this.deadDate}放學前歸還。`;
             this.toast(msg, { title: "租借成功", variant: "success" });
           } else {
-            this.toast(
-              // TODO user + uid uid 判斷自己 => 您解借用
-              `「${product.name}」已被 ${user.nickname}(${user.username}) 租用`,
-              { title: "無法預借", variant: "warning" }
-            );
+            let msg =
+              user.uid === this.$store.state.user.uid
+                ? "你已經借到拉！"
+                : `「${product.name}」已被 ${user.nickname}(${user.username}) 租用`;
+            this.toast(msg, { title: "無法預借", variant: "warning" });
           }
         },
         ({ status, data }) => {
