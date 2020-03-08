@@ -44,7 +44,7 @@ export default {
   },
   computed: {
     productInfo() {
-      return this.$store.state.product.list[this.product];
+      return this.$store.state.product.infoList[this.product];
     },
     useDay() {
       return parseInt((Date.now() - this.borrowTime) / Date.timeOfDay);

@@ -38,7 +38,7 @@ export default {
       });
     },
     /** 自動登入 */
-    autologin({ state }) {
+    autoLogin({ state }) {
       axios.post("/user/auto-login").then(({ data }) => {
         state.nickname = data;
         state.login = true;

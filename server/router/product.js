@@ -33,7 +33,7 @@ init(
 );
 
 // 取得產品資訊
-router.getAsync("/info", async (req, res) => {
+router.getAsync("/info-list", async (req, res) => {
   let infos = await productsInfos.find();
   if (infos === null) {
     res.status(404).send("找不到資料");
@@ -107,7 +107,7 @@ router.getAsync("/borrow", async (req, res) => {
 });
 
 // 取得使用者租借狀態
-router.getAsync("/borrow-list", async (req, res) => {
+router.getAsync("/user-borrow-list", async (req, res) => {
   const { uid } = req.session;
   if (uid === undefined) {
     res.status(401).send("請先登入");

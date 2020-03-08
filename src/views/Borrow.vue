@@ -33,7 +33,7 @@ export default {
   computed: {
     /** 產品資訊 */
     productInfo() {
-      return this.$store.state.product.list[this.product.product];
+      return this.$store.state.product.infoList[this.product.product];
     },
     /** 到期時間 (ms) */
     deadline() {

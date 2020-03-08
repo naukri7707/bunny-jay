@@ -1,12 +1,14 @@
 <template>
   <b-container id="product">
     <transition name="title-fade">
-      <h1 v-show="selection.zhName">Bunny Jay {{ selection.zhName }}</h1>
+      <h1 v-show="selectionInfo.zhName">
+        Bunny Jay {{ selectionInfo.zhName }}
+      </h1>
     </transition>
     <transition-group class="fade-group" name="fade">
       <ProductCard
         class="fade-item"
-        v-for="card in selection.status.list"
+        v-for="card in selectionInfo.status.list"
         :key="card._id"
         v-bind="card"
       />
@@ -24,17 +26,17 @@ export default {
     ProductCard
   },
   computed: {
-    selection() {
-      return this.$store.state.product.selection;
+    selectionInfo() {
+      return this.$store.state.product.selectionInfo;
     }
   },
   methods: {
     loadData(target) {
-      this.$store.dispatch("product/selectProduct", target).then(
+      this.$store.dispatch("product/update", target).then(
         () => {
           this.$store.commit(
             "app/setBackgroundImage",
-            this.selection.background
+            this.selectionInfo.background
           );
         },
         ({ status, data }) => {
@@ -60,7 +62,7 @@ export default {
     next();
   },
   beforeRouteLeave(to, from, next) {
-    this.$store.state.product.selection = Product.default;
+    this.$store.state.product.selectionInfo = Product.default;
     next();
   }
 };

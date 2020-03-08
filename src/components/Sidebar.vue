@@ -13,14 +13,14 @@
       <b-nav vertical>
         <b-nav-item @click="autoClose()">
           <SidebarCard
-            v-for="product in productList"
+            v-for="product in productInfoList"
             :key="product.key"
             :to="`/product/${product.key}`"
           >
             <b-card-title>{{ product.zhName }}</b-card-title>
             <b-card-sub-title>{{ product.name }}</b-card-sub-title>
             <b-card-img :src="product.iconSide" :alt="product.key"></b-card-img>
-            <div v-show="product === selection">
+            <div v-show="product === selectionInfo">
               <template v-if="product.status.remain === -99">
                 <b-spinner variant="primary" label="Spinning"></b-spinner>
               </template>
@@ -31,7 +31,7 @@
                 }}</b-card-text>
               </template>
             </div>
-            <b-button v-show="product !== selection">快速預借</b-button>
+            <b-button v-show="product !== selectionInfo">快速預借</b-button>
           </SidebarCard>
         </b-nav-item>
       </b-nav>
@@ -52,7 +52,7 @@ export default {
   },
   created() {
     this.hidden = Responsive.windowWidth["=="]("XS");
-    this.$store.dispatch("product/getInfo").then(
+    this.$store.dispatch("product/infoList").then(
       () => {},
       ({ status, data }) => {
         this.toast(data, {
@@ -63,8 +63,8 @@ export default {
     );
   },
   computed: {
-    selection() {
-      return this.$store.state.product.selection;
+    selectionInfo() {
+      return this.$store.state.product.selectionInfo;
     },
     hidden: {
       get() {
@@ -74,8 +74,8 @@ export default {
         this.$store.state.sidebar.hidden = value;
       }
     },
-    productList() {
-      return this.$store.state.product.list;
+    productInfoList() {
+      return this.$store.state.product.infoList;
     }
   },
   methods: {

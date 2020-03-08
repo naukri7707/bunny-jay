@@ -4,19 +4,18 @@ import Product from "@/assets/js/product";
 export default {
   namespaced: true,
   state: {
-    selection: Product.default,
-    list: {},
+    selectionInfo: Product.default,
+    infoList: {},
     userBorrowList: []
   },
   actions: {
     // 取得產品資訊
-    // ?? init product info
-    getInfo({ state }) {
+    infoList({ state }) {
       return new Promise((resolve, reject) => {
         axios
-          .get("/product/info")
+          .get("/product/info-list")
           .then(({ data }) => {
-            state.list = Product.makeList(data);
+            state.infoList = Product.makeList(data);
             resolve();
           })
           .catch(err => {
@@ -25,7 +24,7 @@ export default {
       });
     },
     // 更新產品狀態
-    selectProduct({ state }, product) {
+    update({ state }, product) {
       return new Promise((resolve, reject) => {
         axios
           .get("/product/update", {
@@ -34,14 +33,14 @@ export default {
             }
           })
           .then(({ data }) => {
-            state.selection = state.list[product];
+            state.selectionInfo = state.infoList[product];
             let remain = 0;
             for (const p of data) {
               if (p.uid === 0) {
                 remain++;
               }
             }
-            state.selection.status = { remain, list: data };
+            state.selectionInfo.status = { remain, list: data };
             resolve();
           })
           .catch(err => {
@@ -84,8 +83,8 @@ export default {
       });
     },
     /** 取得使用者借閱狀態 */
-    getBorrowList({ state }) {
-      axios.get("/product/borrow-list").then(({ data }) => {
+    userBorrowList({ state }) {
+      axios.get("/product/user-borrow-list").then(({ data }) => {
         state.userBorrowList = data;
       });
     },
@@ -103,7 +102,7 @@ export default {
         return result;
       }
       const state = context.state;
-      const product = state.selection.key;
+      const product = state.selectionInfo.key;
       axios
         .get("/product/addRandom", {
           params: {
@@ -114,8 +113,8 @@ export default {
           }
         })
         .then(({ data }) => {
-          state.selection = state.list[product];
-          context.dispatch("selectProduct", product);
+          state.selectionInfo = state.infoList[product];
+          context.dispatch("update", product);
           alert(data);
         })
         .catch(err => {
@@ -124,5 +123,3 @@ export default {
     }
   }
 };
-
-// TODO 名子和後端統一

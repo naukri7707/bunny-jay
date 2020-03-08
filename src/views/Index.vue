@@ -4,13 +4,13 @@
       <div class="title">歡迎使用BunnyJay</div>
     </b-row>
     <div class="title" v-if="$store.state.user.login === false">您尚未登入</div>
-    <div class="title" v-else-if="borrowList.length === 0">
+    <div class="title" v-else-if="userBorrowList.length === 0">
       沒有租借的器材
     </div>
     <transition-group appear v-else class="fade-group" name="fade" tag="div">
       <IndexCard
         class="fade-item"
-        v-for="card in borrowList"
+        v-for="card in userBorrowList"
         :key="card._id"
         v-bind="card"
       />
@@ -27,12 +27,12 @@ export default {
     IndexCard
   },
   computed: {
-    borrowList() {
+    userBorrowList() {
       return this.$store.state.product.userBorrowList;
     }
   },
   created() {
-    this.$store.dispatch("product/getBorrowList");
+    this.$store.dispatch("product/userBorrowList");
   }
 };
 </script>
