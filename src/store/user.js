@@ -3,8 +3,11 @@ import axios from "axios";
 export default {
   namespaced: true,
   state: {
-    login: false,
-    nickname: ""
+    uid: -1,
+    nickname: "",
+    get login() {
+      return this.uid !== -1;
+    }
   },
   actions: {
     /** 登入 */
@@ -13,8 +16,8 @@ export default {
         axios
           .post("/user/login", data)
           .then(res => {
-            state.nickname = res.data;
-            state.login = true;
+            state.uid = res.data.uid;
+            state.nickname = res.data.nickname;
             resolve(res);
           })
           .catch(err => {
@@ -28,8 +31,8 @@ export default {
           .post("/user/logout")
           .then(() => {
             let res = state.nickname;
+            state.uid = -1;
             state.nickname = "";
-            state.login = false;
             resolve(res);
           })
           .catch(err => {
@@ -40,8 +43,8 @@ export default {
     /** 自動登入 */
     autoLogin({ state }) {
       axios.post("/user/auto-login").then(({ data }) => {
-        state.nickname = data;
-        state.login = true;
+        state.uid = data.uid;
+        state.nickname = data.nickname;
       });
     }
   }

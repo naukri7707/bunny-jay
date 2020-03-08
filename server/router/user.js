@@ -41,7 +41,8 @@ router.postAsync("/login", async (req, res) => {
           req.session.cookie.expires = false;
         }
         req.session.uid = user._id;
-        res.status(200).send(user.nickname);
+        const { uid, nickname } = user;
+        res.status(200).json({ uid, nickname });
       }
     });
   }
@@ -87,7 +88,8 @@ router.postAsync("/auto-login", async (req, res) => {
     if (user === null) {
       res.status(404).send("找不到該用戶");
     } else {
-      res.status(200).send(user.nickname);
+      const { uid, nickname } = user;
+      res.status(200).json({ uid, nickname });
     }
   }
 });
