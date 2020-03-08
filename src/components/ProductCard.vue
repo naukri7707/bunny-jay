@@ -1,10 +1,11 @@
 <template>
   <b-card
     class="product-card"
+    tag="router-link"
+    :to="`/borrow?pid=${_id}`"
     img-top
     :img-src="uid ? productInfo.iconOff : productInfo.iconOn"
     :img-alt="productInfo.key"
-    @click="borrow()"
   >
     <div class="info">
       <div>{{ name }}</div>
@@ -42,54 +43,6 @@ export default {
     /** 是否過期 */
     isExpired() {
       return Date.now() >= this.deadline + Date.timeOfDay;
-    }
-  },
-  methods: {
-    borrow() {
-      if (this.uid === 0) {
-        this.$store.dispatch("product/borrow", this._id).then(
-          ({ data }) => {
-            this.uid = data.uid;
-            this.borrowTime = data.borrowTime;
-            let msg = this.isExpired
-              ? `您已成功預借「${this.name}」，請在當天放學前歸還。`
-              : `您已成功預借「${this.name}」，
-              請於${this.deadDate}}放學前歸還。`;
-
-            this.toast(msg, {
-              title: "租借成功",
-              variant: "success"
-            });
-
-            this.$store.state.product.list[this.product].status.remain--;
-          },
-          ({ status, data }) => {
-            this.toast(data, {
-              title: `Error ${status}`,
-              variant: "danger"
-            });
-            if (status === 401) {
-              this.$router.push("/user/login");
-            }
-          }
-        );
-      } else {
-        this.$store.dispatch("product/getStatus", this._id).then(
-          ({ data }) => {
-            let { username, nickname } = data;
-            this.toast(`「${this.name}」已被 ${nickname}(${username}) 租用`, {
-              title: "無法預借",
-              variant: "warning"
-            });
-          },
-          ({ status, data }) => {
-            this.toast(data, {
-              title: `Error ${status}`,
-              variant: "danger"
-            });
-          }
-        );
-      }
     }
   }
 };

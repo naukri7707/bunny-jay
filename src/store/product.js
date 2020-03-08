@@ -65,7 +65,8 @@ export default {
           });
       });
     },
-    getStatus(context, pid) {
+    /** 取得指定產品狀態 */
+    status(context, pid) {
       return new Promise((resolve, reject) => {
         axios
           .get("/product/status", {
@@ -122,3 +123,5 @@ export default {
     }
   }
 };
+
+// TODO 名子和後端統一

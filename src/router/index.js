@@ -4,6 +4,7 @@ import VueRouter from "vue-router";
 import Index from "@/views/Index.vue";
 import Login from "@/views/Login.vue";
 import Product from "@/views/Product.vue";
+import Borrow from "@/views/Borrow.vue";
 import NotFound from "@/views/404.vue";
 Vue.use(VueRouter);
 
@@ -12,6 +13,7 @@ const routes = [
   { path: "/", component: Index },
   { path: "/user/login", component: Login },
   { path: "/product/:product", component: Product },
+  { path: "/borrow", component: Borrow },
   { path: "*", component: NotFound }
 ];
 
