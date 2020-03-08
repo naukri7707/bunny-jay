@@ -29,7 +29,12 @@ export default {
   methods: {
     loadData(target) {
       this.$store.dispatch("product/selectProduct", target).then(
-        () => {},
+        () => {
+          this.$store.commit(
+            "app/setBackgroundImage",
+            this.selection.background
+          );
+        },
         ({ status, data }) => {
           this.toast(data, {
             title: `Error ${status}`,
