@@ -1,14 +1,17 @@
 <template>
   <aside ref="sidebar" id="sidebar">
     <MenuIcon :class="{ hidden }" :cross="!hidden" @click="hidden = !hidden" />
-    <div :class="['sidebar-menu', 'auto-hide-scrollbar', { hidden: hidden }]">
+    <div
+      :class="['sidebar-menu', 'auto-hide-scrollbar', { hidden: hidden }]"
+      @click="autoClose()"
+    >
       <router-link class="brand" to="/">
         <div class="sup-title">多媒體設計系 系辦</div>
         <div class="title">租借項目</div>
         <img alt="icon" class="responsive" src="@/assets/img/Bunny_s.png" />
       </router-link>
       <b-nav vertical>
-        <b-nav-item>
+        <b-nav-item @click="autoClose()">
           <SidebarCard
             v-for="product in productList"
             :key="product.key"
@@ -47,6 +50,18 @@ export default {
     MenuIcon,
     SidebarCard
   },
+  created() {
+    this.hidden = Responsive.windowWidth["=="]("XS");
+    this.$store.dispatch("product/getInfo").then(
+      () => {},
+      ({ status, data }) => {
+        this.toast(data, {
+          title: `Error ${status}`,
+          variant: "danger"
+        });
+      }
+    );
+  },
   computed: {
     selection() {
       return this.$store.state.product.selection;
@@ -63,17 +78,10 @@ export default {
       return this.$store.state.product.list;
     }
   },
-  created() {
-    this.hidden = Responsive.windowWidth["=="]("XS");
-    this.$store.dispatch("product/getInfo").then(
-      () => {},
-      ({ status, data }) => {
-        this.toast(data, {
-          title: `Error ${status}`,
-          variant: "danger"
-        });
-      }
-    );
+  methods: {
+    autoClose() {
+      this.hidden = Responsive.windowWidth["=="]("XS");
+    }
   }
 };
 </script>
