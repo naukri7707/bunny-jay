@@ -65,41 +65,45 @@ router.getAsync("/update", async (req, res) => {
 
 // 取得指定產品資訊
 router.getAsync("/status", async (req, res) => {
-  let pid = parseInt(req.query.pid);
-  let product = await products.findById(pid);
+  const pid = parseInt(req.query.pid);
+  const product = await products.findById(pid);
   if (product === null) {
     res.status(404).send("查無此產品");
     return;
   }
-  let user = await users.findById(product.uid);
-  if (user === null) {
-    res.status(404).send("查無此用戶");
-  } else {
-    let { username, nickname } = user;
-    res.status(200).json({ username, nickname });
-  }
+  const user = (await users.findById(product.uid, [
+    "username",
+    "nickname"
+  ])) || { username: "", nickname: "" };
+  res.status(200).send({ product, user });
 });
 
 // 租借產品
 router.getAsync("/borrow", async (req, res) => {
   const { uid } = req.session;
-  const { pid } = req.query;
+  const pid = parseInt(req.query.pid);
   if (uid === undefined) {
     res.status(401).send("請先登入");
     return;
   }
-  let doc = await products.findById(pid);
-  if (doc === null) {
+  let borrow = false;
+  let product = await products.findById(pid);
+  if (product === null) {
     res.status(500).send("找不到目標產品");
     return;
   }
-  if (doc.uid !== 0) {
-    res.status(500).send("該產品已被租借");
-  } else {
-    let data = { uid, borrowTime: Date.today() };
-    await products.findByIdAndUpdate(pid, data);
-    res.status(200).json(data);
+  // 目前沒有使用者，租借之
+  if (product.uid === 0) {
+    product = await products.findByIdAndUpdate(
+      pid,
+      { uid, borrowTime: Date.today() },
+      { new: true }
+    );
+    borrow = true;
   }
+  // 取得的使用者資訊
+  const user = await users.findById(product.uid, ["username", "nickname"]);
+  res.status(200).send({ borrow, product, user });
 });
 
 // 取得使用者租借狀態
