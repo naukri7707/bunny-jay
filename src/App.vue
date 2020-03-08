@@ -18,13 +18,8 @@ export default {
     Navbar
   },
   computed: {
-    selection() {
-      return this.$store.state.product.selection;
-    },
     appStyle() {
-      return {
-        backgroundImage: `url(${this.selection.background})`
-      };
+      return this.$store.state.app.style;
     }
   },
   created() {
