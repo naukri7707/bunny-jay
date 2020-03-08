@@ -12,7 +12,7 @@
           <SidebarCard
             v-for="product in productList"
             :key="product.key"
-            :to="`/borrow/${product.key}`"
+            :to="`/product/${product.key}`"
           >
             <b-card-title>{{ product.zhName }}</b-card-title>
             <b-card-sub-title>{{ product.name }}</b-card-sub-title>

@@ -3,7 +3,7 @@ import VueRouter from "vue-router";
 // Views
 import Index from "@/views/Index.vue";
 import Login from "@/views/Login.vue";
-import Borrow from "@/views/Borrow.vue";
+import Product from "@/views/Product.vue";
 import NotFound from "@/views/404.vue";
 Vue.use(VueRouter);
 
@@ -11,7 +11,7 @@ Vue.use(VueRouter);
 const routes = [
   { path: "/", component: Index },
   { path: "/user/login", component: Login },
-  { path: "/borrow/:product", component: Borrow },
+  { path: "/product/:product", component: Product },
   { path: "*", component: NotFound }
 ];
 

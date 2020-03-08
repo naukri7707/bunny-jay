@@ -1,6 +1,6 @@
 <template>
   <b-card
-    class="borrow-card"
+    class="product-card"
     img-top
     :img-src="uid ? productInfo.iconOff : productInfo.iconOn"
     :img-alt="productInfo.key"
@@ -18,7 +18,7 @@
 
 <script>
 export default {
-  name: "BorrowCard",
+  name: "ProductCard",
   props: {
     _id: Number,
     product: String,
@@ -96,7 +96,7 @@ export default {
 </script>
 
 <style scope lang="scss">
-.borrow-card {
+.product-card {
   @include buttonify;
   display: inline-block;
   word-wrap: break-word;

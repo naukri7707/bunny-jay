@@ -1,7 +1,7 @@
 <template>
-  <b-container id="borrow">
+  <b-container id="product">
     <h1>Bunny Jay {{ selection.zhName }}</h1>
-    <BorrowCard
+    <ProductCard
       v-for="card in selection.status.list"
       :key="card._id"
       v-bind="card"
@@ -13,13 +13,13 @@
 </template>
 
 <script>
-import BorrowCard from "@/components/BorrowCard.vue";
+import ProductCard from "@/components/ProductCard.vue";
 import Product from "@/assets/js/product";
 
 export default {
-  name: "borrow",
+  name: "product",
   components: {
-    BorrowCard
+    ProductCard
   },
   computed: {
     selection() {
