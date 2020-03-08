@@ -37,7 +37,11 @@
     opacity: 0;
     transform: translateY(30px);
   }
+
   .fade-leave-active {
     position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
   }
 }
