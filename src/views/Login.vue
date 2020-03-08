@@ -2,7 +2,7 @@
   <b-container id="login">
     <h1>LOGIN</h1>
     <b-row>
-      <b-form @submit.prevent="onSubmit" @cancel="onCancel">
+      <b-form @submit.prevent="onSubmit">
         <b-input-group class="mb-3">
           <b-input-group-prepend is-text>
             <b-icon icon="person-fill"></b-icon>
@@ -43,6 +43,7 @@ export default {
   name: "login",
   data() {
     return {
+      prevPage: "/",
       form: {
         username: "",
         password: "",
@@ -58,7 +59,7 @@ export default {
             title: "登入成功",
             variant: "success"
           });
-          this.$router.go(-1);
+          this.$router.push(this.prevPage);
         },
         ({ status, data }) => {
           this.toast(data, {
@@ -67,10 +68,13 @@ export default {
           });
         }
       );
-    },
-    onCancel() {
-      this.$router.go(-1);
     }
+  },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      vm.prevPage = from.path;
+      next();
+    });
   }
 };
 </script>
