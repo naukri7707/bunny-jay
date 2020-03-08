@@ -10,6 +10,7 @@ export default {
   },
   actions: {
     // 取得產品資訊
+    // ?? init product info
     getInfo({ state }) {
       return new Promise((resolve, reject) => {
         axios

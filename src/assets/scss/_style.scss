@@ -25,3 +25,19 @@
     color: azure;
   }
 }
+
+// 過度群組
+.fade-group {
+  .fade-item {
+    transition: all 1s ease;
+  }
+
+  .fade-enter,
+  .fade-leave-to {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  .fade-leave-active {
+    position: absolute;
+  }
+}

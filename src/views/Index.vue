@@ -7,9 +7,14 @@
     <div class="title" v-else-if="borrowList.length === 0">
       沒有租借的器材
     </div>
-    <div v-else>
-      <IndexCard v-for="card in borrowList" :key="card._id" v-bind="card" />
-    </div>
+    <transition-group appear v-else class="fade-group" name="fade" tag="div">
+      <IndexCard
+        class="fade-item"
+        v-for="card in borrowList"
+        :key="card._id"
+        v-bind="card"
+      />
+    </transition-group>
   </b-container>
 </template>
 

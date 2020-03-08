@@ -3,7 +3,7 @@ export default class Product {
   static imgUrl = "assets/img/product";
 
   /** 空產品 */
-  static default = { status: { remain: -99, list: [] } };
+  static default = new Product("", "", "", 0);
 
   static makeList(data) {
     let res = {};

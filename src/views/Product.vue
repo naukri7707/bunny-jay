@@ -1,14 +1,16 @@
 <template>
   <b-container id="product">
-    <h1>Bunny Jay {{ selection.zhName }}</h1>
-    <ProductCard
-      v-for="card in selection.status.list"
-      :key="card._id"
-      v-bind="card"
-    />
-    <b-button @click="addRandomData">
-      新增隨機資料
-    </b-button>
+    <transition name="title-fade">
+      <h1 v-show="selection.zhName">Bunny Jay {{ selection.zhName }}</h1>
+    </transition>
+    <transition-group class="fade-group" name="fade">
+      <ProductCard
+        class="fade-item"
+        v-for="card in selection.status.list"
+        :key="card._id"
+        v-bind="card"
+      />
+    </transition-group>
   </b-container>
 </template>
 
@@ -49,8 +51,8 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
-      next();
       vm.loadData(to.params.product);
+      next();
     });
   },
   beforeRouteUpdate(to, from, next) {
@@ -64,4 +66,13 @@ export default {
 };
 </script>
 
-<style scope lang="scss"></style>
+<style scope lang="scss">
+.title-fade-enter-active,
+.title-fade-leave-active {
+  transition: opacity 0.5s;
+}
+.title-fade-enter,
+.title-fade-leave-to {
+  opacity: 0;
+}
+</style>
