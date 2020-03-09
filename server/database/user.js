@@ -9,14 +9,16 @@ const User = new Schema(
   {
     // UID
     _id: Number,
+    // 用戶組
+    usergroup: Number,
     // 帳號
-    username: String,
+    username: { type: String, unique: true },
     // 密碼
     password: String,
     // 暱稱
     nickname: String,
     // 電子信箱
-    email: String
+    email: { type: String, unique: true }
     // ...
   },
   {
