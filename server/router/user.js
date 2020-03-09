@@ -40,11 +40,27 @@ router.postAsync("/login", async (req, res) => {
         if (!option.includes("keep-login")) {
           req.session.cookie.expires = false;
         }
-        req.session.uid = user._id;
-        const { _id, nickname } = user;
-        res.status(200).json({ uid: _id, nickname });
+        const { _id, usergroup, nickname } = user;
+        req.session.uid = _id;
+        res.status(200).json({ uid: _id, usergroup, nickname });
       }
     });
+  }
+});
+
+// 自動登入
+router.postAsync("/auto-login", async (req, res) => {
+  const { uid } = req.session;
+  if (uid === undefined) {
+    res.status(401).send("已登出，請重新登入");
+  } else {
+    const user = await users.findById(uid);
+    if (user === null) {
+      res.status(404).send("找不到該用戶");
+    } else {
+      const { usergroup, nickname } = user;
+      res.status(200).json({ uid, usergroup, nickname });
+    }
   }
 });
 
@@ -64,33 +80,59 @@ router.post("/logout", (req, res) => {
 });
 
 // 用戶註冊
-router.post("/sign-up", (req, res) => {
-  const data = req.body;
-  // TODO 正則驗證
+router.postAsync("/sign-up", async (req, res) => {
+  const data = Object.assign(
+    { username: "", password: "", nickname: "", email: "" },
+    req.body
+  );
+  //
+  // const legalWordRegex = /^[a-zA-Z0-9~!@#$%^&*()_+`\-={}\[\]:\";\'<>?,.\/]+$/;
+  // const passwordRegex = /^(?=.*\d)(?=.*[a-zA-Z])/;
+  // const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+  // if (data.username.length < 8 || data.username.length > 32) {
+  //   res.status(406).send("帳號長度需介於8至32之間");
+  // } else if (legalWordRegex.test(data.username) === false) {
+  //   res.status(406).send("帳號含有非法字元");
+  // } else if (data.password.length < 8 || data.password.length > 32) {
+  //   res.status(406).send("密碼長度需介於8至32之間");
+  // } else if (legalWordRegex.test(data.password) === false) {
+  //   res.status(406).send("密碼含有非法字元");
+  // } else if (passwordRegex.test(data.password) === false) {
+  //   res.status(406).send("密碼需包含英文和數字");
+  // } else if (!data.email || emailRegex.test(data.email) === false) {
+  //   res.status(406).send("無效的信箱");
+  // } else {
   data._id = uid;
-  users.create(data, err => {
-    if (err) {
-      res.json({ code: 1, msg: err });
-    } else {
-      uid++;
-      res.json({ code: 0, msg: "成功" });
-    }
-  });
+  data.usergroup = 1;
+  await users.create(data);
+  uid++;
+  res.status(204).end();
+  //}
 });
 
-// 自動登入
-router.postAsync("/auto-login", async (req, res) => {
+router.getAsync("/profile", async (req, res) => {
   const { uid } = req.session;
   if (uid === undefined) {
-    res.status(401).send("已登出，請重新登入");
+    res.status(401).send("尚未登入");
   } else {
-    const user = await users.findById(uid);
-    if (user === null) {
-      res.status(404).send("找不到該用戶");
+    const user = await users.findById(uid, ["username", "nickname"]);
+    res.status(200).send(user);
+  }
+});
+
+// 攔截部分 user 異常事件
+router.use((err, req, res, next) => {
+  if (err.name === "MongoError" && err.code === 11000) {
+    if (err.keyPattern.username) {
+      res.status(406).send("該帳號已被註冊");
+    } else if (err.keyPattern.email) {
+      res.status(406).send("該電子信箱已被使用");
     } else {
-      const { _id, nickname } = user;
-      res.status(200).json({ uid: _id, nickname });
+      next(err);
     }
+  } else {
+    next(err);
   }
 });
 

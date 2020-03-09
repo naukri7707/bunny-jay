@@ -4,6 +4,7 @@ export default {
   namespaced: true,
   state: {
     uid: -1,
+    usergroup: 0,
     nickname: "",
     get login() {
       return this.uid !== -1;
@@ -16,13 +17,24 @@ export default {
         axios
           .post("/user/login", data)
           .then(res => {
-            state.uid = res.data.uid;
-            state.nickname = res.data.nickname;
+            const { uid, usergroup, nickname } = res.data;
+            state.uid = uid;
+            state.usergroup = usergroup;
+            state.nickname = nickname;
             resolve(res);
           })
           .catch(err => {
             reject(err.response);
           });
+      });
+    },
+    /** 自動登入 */
+    autoLogin({ state }) {
+      axios.post("/user/auto-login").then(({ data }) => {
+        const { uid, usergroup, nickname } = data;
+        state.uid = uid;
+        state.usergroup = usergroup;
+        state.nickname = nickname;
       });
     },
     logout({ state }) {
@@ -38,13 +50,6 @@ export default {
           .catch(err => {
             reject(err.response);
           });
-      });
-    },
-    /** 自動登入 */
-    autoLogin({ state }) {
-      axios.post("/user/auto-login").then(({ data }) => {
-        state.uid = data.uid;
-        state.nickname = data.nickname;
       });
     }
   }
