@@ -2,9 +2,15 @@
   <b-container id="product">
     <h1>{{ product.name }}</h1>
     <div>類型：{{ productInfo.zhName }}</div>
-    <div :alt="user.username || 無">使用者：{{ user.nickname || "無" }}</div>
-    <div>租借時間</div>
-    <div>到期日</div>
+    <div v-if="user.username">
+      使用者：{{ user.nickname }} ({{ user.username }})
+    </div>
+    <div v-else>
+      使用者：無
+    </div>
+    <div>租借時間：{{ new Date(product.borrowTime).format("yyyy/MM/dd") }}</div>
+    <div>到期時間：{{ deadDate }}</div>
+    <br />
     <b-button variant="info" @click="borrow">
       Bunny Jay 這個
     </b-button>
