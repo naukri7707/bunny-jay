@@ -13,6 +13,9 @@
         v-bind="card"
       />
     </transition-group>
+    <b-button @click="addRandomData()">
+      ADD
+    </b-button>
   </b-container>
 </template>
 
