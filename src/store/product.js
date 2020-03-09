@@ -26,26 +26,31 @@ export default {
     // 更新產品狀態
     update({ state }, product) {
       return new Promise((resolve, reject) => {
-        axios
-          .get("/product/update", {
-            params: {
-              product
-            }
-          })
-          .then(({ data }) => {
-            state.selectionInfo = state.infoList[product];
-            let remain = 0;
-            for (const p of data) {
-              if (p.uid === 0) {
-                remain++;
+        if (product in state.infoList) {
+          state.selectionInfo.status = { remain: -99, list: [] };
+          state.selectionInfo = state.infoList[product];
+          axios
+            .get("/product/update", {
+              params: {
+                product
               }
-            }
-            state.selectionInfo.status = { remain, list: data };
-            resolve();
-          })
-          .catch(err => {
-            reject(err.response);
-          });
+            })
+            .then(({ data }) => {
+              let remain = 0;
+              for (const p of data) {
+                if (p.uid === 0) {
+                  remain++;
+                }
+              }
+              state.selectionInfo.status = { remain, list: data };
+              resolve();
+            })
+            .catch(err => {
+              reject(err.response);
+            });
+        } else {
+          reject(new Error("無此產品"));
+        }
       });
     },
     // 租借產品

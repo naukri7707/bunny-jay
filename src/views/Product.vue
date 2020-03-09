@@ -1,10 +1,6 @@
 <template>
   <b-container id="product">
-    <transition name="title-fade">
-      <h1 v-show="selectionInfo.zhName">
-        Bunny Jay {{ selectionInfo.zhName }}
-      </h1>
-    </transition>
+    <h1>Bunny Jay {{ selectionInfo.zhName }}</h1>
     <transition-group class="fade-group" name="fade">
       <ProductCard
         class="fade-item"
@@ -71,13 +67,4 @@ export default {
 };
 </script>
 
-<style scope lang="scss">
-.title-fade-enter-active,
-.title-fade-leave-active {
-  transition: opacity 0.5s;
-}
-.title-fade-enter,
-.title-fade-leave-to {
-  opacity: 0;
-}
-</style>
+<style scope lang="scss"></style>
