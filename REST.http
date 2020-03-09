@@ -20,9 +20,10 @@ POST http://localhost:8088/user/sign-up HTTP/1.1
 content-type: application/json
  
 {
-    "username": "user1",
-    "password": "user1",
-    "nickname": "user1"
+    "username": "sysop",
+    "password": "sysop",
+    "nickname": "系統管理員",
+    "email": "bunny-jay@gmail.com"
 }
 
 ### add-info
