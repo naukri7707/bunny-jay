@@ -59,7 +59,12 @@ export default {
             title: "登入成功",
             variant: "success"
           });
-          this.$router.push(this.prevPage);
+
+          if (this.prevPage === "/") {
+            this.$router.push("/");
+          } else {
+            this.$router.go(-1); // 這樣才能保留 query
+          }
         },
         ({ status, data }) => {
           this.toast(data, {

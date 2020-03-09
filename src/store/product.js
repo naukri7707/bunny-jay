@@ -52,10 +52,8 @@ export default {
     borrow(context, pid) {
       return new Promise((resolve, reject) => {
         axios
-          .get("/product/borrow", {
-            params: {
-              pid
-            }
+          .post("/product/borrow", {
+            pid
           })
           .then(res => {
             resolve(res);
@@ -65,7 +63,22 @@ export default {
           });
       });
     },
-    /** 取得指定產品狀態 */
+    // 回收產品
+    retrieve(context, pid) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post("/product/retrieve", {
+            pid
+          })
+          .then(res => {
+            resolve(res);
+          })
+          .catch(err => {
+            reject(err.response);
+          });
+      });
+    },
+    // 取得指定產品狀態
     status(context, pid) {
       return new Promise((resolve, reject) => {
         axios
@@ -82,7 +95,7 @@ export default {
           });
       });
     },
-    /** 取得使用者借閱狀態 */
+    // 取得使用者借閱狀態
     userBorrowList({ state }) {
       axios.get("/product/user-borrow-list").then(({ data }) => {
         state.userBorrowList = data;

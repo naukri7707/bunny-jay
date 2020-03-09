@@ -79,31 +79,51 @@ router.getAsync("/status", async (req, res) => {
 });
 
 // 租借產品
-router.getAsync("/borrow", async (req, res) => {
+router.postAsync("/borrow", async (req, res) => {
   const { uid } = req.session;
-  const pid = parseInt(req.query.pid);
+  const pid = parseInt(req.body.pid) || 0;
   if (uid === undefined) {
     res.status(401).send("請先登入");
     return;
   }
-  let borrow = false;
   let product = await products.findById(pid);
   if (product === null) {
     res.status(500).send("找不到目標產品");
     return;
   }
+  let borrow = product.uid === 0;
   // 目前沒有使用者，租借之
-  if (product.uid === 0) {
+  if (borrow) {
     product = await products.findByIdAndUpdate(
       pid,
       { uid, borrowTime: Date.today() },
       { new: true }
     );
-    borrow = true;
   }
   // 取得的使用者資訊
   const user = await users.findById(product.uid, ["username", "nickname"]);
   res.status(200).send({ borrow, product, user });
+});
+
+// 回收產品
+router.postAsync("/retrieve", async (req, res) => {
+  const { uid } = req.session;
+  const pid = parseInt(req.body.pid) || 0;
+  if (uid === undefined) {
+    res.status(401).send("請先登入");
+    return;
+  }
+  const { usergroup } = await users.findById(uid, ["usergroup"]);
+  if (usergroup < 90) {
+    res.status(403).send("您沒有足夠的權限進行回收");
+  } else {
+    const product = await products.findByIdAndUpdate(
+      pid,
+      { uid: 0, borrowTime: 0 },
+      { new: true }
+    );
+    res.status(200).json(product);
+  }
 });
 
 // 取得使用者租借狀態
