@@ -20,15 +20,19 @@ mongoose.connect(uri, {
   useUnifiedTopology: true
 });
 
-/** 資料庫物件 */
-const db = mongoose.connection;
+/** 資料庫連線物件 */
+const { connection } = mongoose;
 
 // 監測錯誤
-db.on("error", err => {
+connection.on("error", err => {
   console.log(`資料庫連接失敗：${err}`);
 });
 
 // 連結成功後回調提示訊息
-db.once("open", () => {
+connection.once("open", () => {
   console.log(`資料庫連接成功 ${chalk.cyan(uri)}`);
 });
+
+module.exports = {
+  connection
+};

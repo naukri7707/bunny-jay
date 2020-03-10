@@ -76,6 +76,18 @@ export default {
             reject(err.response);
           });
       });
+    },
+    changePassword(context, data) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post("/user/change-password", data)
+          .then(() => {
+            resolve();
+          })
+          .catch(err => {
+            reject(err.response);
+          });
+      });
     }
   }
 };
