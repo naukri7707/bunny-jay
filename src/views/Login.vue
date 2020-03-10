@@ -75,9 +75,9 @@ export default {
           "Unknown",
           "rv",
           "Firefox",
-          "Edge",
           "Safari",
           "Chrome",
+          "Edge",
           "Opera"
         ];
         let i = keys.length;
