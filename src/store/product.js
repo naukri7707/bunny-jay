@@ -4,7 +4,10 @@ import Product from "@/assets/js/product";
 export default {
   namespaced: true,
   state: {
-    selectionInfo: Product.default,
+    get selectionInfo() {
+      return this.infoList[this.mSelection] || Product.default;
+    },
+    mSelection: "",
     infoList: {},
     userBorrowList: []
   },
@@ -26,31 +29,27 @@ export default {
     // 更新產品狀態
     update({ state }, product) {
       return new Promise((resolve, reject) => {
-        if (product in state.infoList) {
-          state.selectionInfo.status = { remain: -99, list: [] };
-          state.selectionInfo = state.infoList[product];
-          axios
-            .get("/product/update", {
-              params: {
-                product
+        state.mSelection = product;
+        axios
+          .get("/product/update", {
+            params: {
+              product
+            }
+          })
+          .then(({ data }) => {
+            let remain = 0;
+            for (const p of data) {
+              if (p.uid === 0) {
+                remain++;
               }
-            })
-            .then(({ data }) => {
-              let remain = 0;
-              for (const p of data) {
-                if (p.uid === 0) {
-                  remain++;
-                }
-              }
-              state.selectionInfo.status = { remain, list: data };
-              resolve();
-            })
-            .catch(err => {
-              reject(err.response);
-            });
-        } else {
-          reject(new Error("無此產品"));
-        }
+            }
+            state.selectionInfo.status = { remain, list: data };
+
+            resolve();
+          })
+          .catch(err => {
+            reject(err.response);
+          });
       });
     },
     // 租借產品
@@ -121,6 +120,7 @@ export default {
       }
       const state = context.state;
       const product = state.selectionInfo.key;
+      state.mSelection = product;
       axios
         .get("/product/addRandom", {
           params: {
@@ -131,7 +131,6 @@ export default {
           }
         })
         .then(({ data }) => {
-          state.selectionInfo = state.infoList[product];
           context.dispatch("update", product);
           alert(data);
         })
