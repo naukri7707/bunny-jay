@@ -88,6 +88,42 @@ export default {
             reject(err.response);
           });
       });
+    },
+    loginDevice() {
+      return new Promise((resolve, reject) => {
+        axios
+          .get("/user/login-device")
+          .then(res => {
+            resolve(res);
+          })
+          .catch(err => {
+            reject(err.response);
+          });
+      });
+    },
+    logoutDevice(context, sid) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post("/user/logout-device", { sid })
+          .then(res => {
+            resolve(res);
+          })
+          .catch(err => {
+            reject(err.response);
+          });
+      });
+    },
+    logoutAllDevice() {
+      return new Promise((resolve, reject) => {
+        axios
+          .post("/user/logout-all-device")
+          .then(res => {
+            resolve(res);
+          })
+          .catch(err => {
+            reject(err.response);
+          });
+      });
     }
   }
 };

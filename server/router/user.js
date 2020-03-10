@@ -164,9 +164,51 @@ router.postAsync("/change-password", async (req, res) => {
       res.status(406).send("密碼不正確");
     } else {
       await users.findByIdAndUpdate(uid, { password: newPassword });
-      await sessions.remove({ "session.uid": uid });
+      await sessions.deleteMany({ "session.uid": uid });
       res.status(204).end();
     }
+  }
+});
+
+router.getAsync("/login-device", async (req, res) => {
+  const { uid, id } = req.session;
+  if (uid === undefined) {
+    res.status(401).send("尚未登入");
+  } else {
+    const session = await sessions.find({ "session.uid": uid });
+    res.status(200).json(
+      session.map(item => {
+        return {
+          current: item._id === id,
+          _id: item._id,
+          agent: item.session.agent,
+          date: item.expires - item.session.cookie.originalMaxAge
+        };
+      })
+    );
+  }
+});
+
+router.postAsync("/logout-device", async (req, res) => {
+  const { uid } = req.session;
+  const sid = req.body.sid || "";
+  if (uid === undefined) {
+    res.status(401).send("尚未登入");
+  } else if (sid === "") {
+    res.status(401).send("沒有目標");
+  } else {
+    const resp = await sessions.deleteOne({ _id: sid, "session.uid": uid });
+    res.status(200).json(resp);
+  }
+});
+
+router.postAsync("/logout-all-device", async (req, res) => {
+  const { uid } = req.session;
+  if (uid === undefined) {
+    res.status(401).send("尚未登入");
+  } else {
+    const resp = await sessions.deleteMany({ "session.uid": uid });
+    res.status(200).json(resp);
   }
 });
 

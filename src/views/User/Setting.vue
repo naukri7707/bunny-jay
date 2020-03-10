@@ -9,7 +9,9 @@
     <b-tab title="修改密碼" active>
       <ChangePassword />
     </b-tab>
-    <b-tab title="登入裝置" lazy></b-tab>
+    <b-tab title="已登入裝置" lazy>
+      <LoginDevice />
+    </b-tab>
     <b-tab title="泡咖啡" lazy>
       <b-button @click="test()">TEST</b-button>
     </b-tab>
@@ -18,11 +20,12 @@
 
 <script>
 import ChangePassword from "@/components/ChangePassword.vue";
-
+import LoginDevice from "@/components/LoginDevice.vue";
 export default {
   name: "setting",
   components: {
-    ChangePassword
+    ChangePassword,
+    LoginDevice
   }
 };
 </script>

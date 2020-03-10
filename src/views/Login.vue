@@ -83,7 +83,7 @@ export default {
         let i = keys.length;
         while (--i && userAgent.indexOf(keys[i]) === -1);
 
-        return `${os};${i === 1 ? "IE" : keys[i]}`;
+        return `${os} (${i === 1 ? "IE" : keys[i]})`;
       }
       this.$store
         .dispatch("user/login", Object.assign(this.form, { agent: agent() }))
