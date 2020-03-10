@@ -115,8 +115,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.input-group-text {
-  min-width: 4.5rem;
-  place-content: center;
+#profile {
+  .input-group-text {
+    min-width: 4.5rem;
+    place-content: center;
+  }
 }
 </style>
