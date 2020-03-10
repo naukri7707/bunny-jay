@@ -2,8 +2,8 @@
   font-family: "BunnyJay";
 }
 
-/* 修正手機因隱藏網址列導致`vh`錯誤問題 */
-@media (max-width: 767.98px) {
+/* 修正手機(直向)因隱藏網址列導致`vh`錯誤問題 */
+@media (max-width: 575.98px) {
   :root {
     --app-height: 100%;
   }
@@ -12,5 +12,5 @@
   body {
     overflow: scroll;
     height: var(--app-height);
-   }
+  }
 }
