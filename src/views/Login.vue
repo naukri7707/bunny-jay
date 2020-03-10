@@ -53,26 +53,60 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.$store.dispatch("user/login", this.form).then(
-        ({ data }) => {
-          this.toast(`歡迎回來，${data.nickname}`, {
-            title: "登入成功",
-            variant: "success"
-          });
-
-          if (this.prevPage === "/") {
-            this.$router.push("/");
-          } else {
-            this.$router.go(-1); // 這樣才能保留 query
-          }
-        },
-        ({ status, data }) => {
-          this.toast(data, {
-            title: `Error ${status}`,
-            variant: "danger"
-          });
+      function agent() {
+        let { platform, userAgent } = navigator;
+        let os = "Unknown";
+        if (
+          ["Macintosh", "MacIntel", "MacPPC", "Mac68K"].indexOf(platform) !== -1
+        ) {
+          os = "Mac OS";
+        } else if (["iPhone", "iPad", "iPod"].indexOf(platform) !== -1) {
+          os = "iOS";
+        } else if (
+          ["Win32", "Win64", "Windows", "WinCE"].indexOf(platform) !== -1
+        ) {
+          os = "Windows";
+        } else if (/Android/.test(userAgent)) {
+          os = "Android";
+        } else if (/Linux/.test(platform)) {
+          os = "Linux";
         }
-      );
+        let keys = [
+          "Unknown",
+          "rv",
+          "Firefox",
+          "Edge",
+          "Safari",
+          "Chrome",
+          "Opera"
+        ];
+        let i = keys.length;
+        while (--i && userAgent.indexOf(keys[i]) === -1);
+
+        return `${os};${i === 1 ? "IE" : keys[i]}`;
+      }
+      this.$store
+        .dispatch("user/login", Object.assign(this.form, { agent: agent() }))
+        .then(
+          ({ data }) => {
+            this.toast(`歡迎回來，${data.nickname}`, {
+              title: "登入成功",
+              variant: "success"
+            });
+
+            if (this.prevPage === "/") {
+              this.$router.push("/");
+            } else {
+              this.$router.go(-1); // 這樣才能保留 query
+            }
+          },
+          ({ status, data }) => {
+            this.toast(data, {
+              title: `Error ${status}`,
+              variant: "danger"
+            });
+          }
+        );
     }
   },
   beforeRouteEnter(to, from, next) {
