@@ -5,7 +5,10 @@
         <b-form-input v-model="form._id" disabled></b-form-input>
       </b-input-group>
       <b-input-group class="mb-3" prepend="用戶組">
-        <b-form-input v-model="form.usergroup" disabled></b-form-input>
+        <b-form-input
+          v-model="usergroup[form.usergroup]"
+          disabled
+        ></b-form-input>
       </b-input-group>
       <b-input-group class="mb-3" prepend="帳號">
         <b-form-input v-model="form.username" disabled></b-form-input>
@@ -54,6 +57,12 @@ export default {
   name: "profile",
   data() {
     return {
+      usergroup: {
+        0: "訪客",
+        1: "一般用戶",
+        90: "管理員",
+        100: "系統管理員"
+      },
       form: {
         _id: 0,
         usergroup: 0,
