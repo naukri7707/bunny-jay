@@ -2,7 +2,7 @@
   <b-navbar type="dark" variant="dark" sticky>
     <b-navbar-nav class="ml-auto">
       <b-nav-item-dropdown :text="nickname" v-if="isLogin" right>
-        <b-dropdown-item to="#">個人資料</b-dropdown-item>
+        <b-dropdown-item to="/user/profile">個人資料</b-dropdown-item>
         <b-dropdown-item @click="logout()">登出</b-dropdown-item>
       </b-nav-item-dropdown>
       <b-nav-item v-else to="/user/login">登入</b-nav-item>

@@ -89,7 +89,7 @@ router.postAsync("/sign-up", async (req, res) => {
   // const legalWordRegex = /^[a-zA-Z0-9~!@#$%^&*()_+`\-={}\[\]:\";\'<>?,.\/]+$/;
   // const passwordRegex = /^(?=.*\d)(?=.*[a-zA-Z])/;
   // const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
+  // TODO 暱稱
   // if (data.username.length < 8 || data.username.length > 32) {
   //   res.status(406).send("帳號長度需介於8至32之間");
   // } else if (legalWordRegex.test(data.username) === false) {
@@ -111,13 +111,34 @@ router.postAsync("/sign-up", async (req, res) => {
   //}
 });
 
+// 取得用戶資訊
 router.getAsync("/profile", async (req, res) => {
   const { uid } = req.session;
   if (uid === undefined) {
     res.status(401).send("尚未登入");
   } else {
-    const user = await users.findById(uid, ["username", "nickname"]);
+    const user = await users.findById(uid, [
+      "username",
+      "nickname",
+      "email",
+      "usergroup"
+    ]);
     res.status(200).send(user);
+  }
+});
+
+router.postAsync("/edit-nickname", async (req, res) => {
+  const { uid } = req.session;
+  const nickname = req.body.nickname || "";
+  if (uid === undefined) {
+    res.status(401).send("尚未登入");
+  } else if (nickname.length === 0) {
+    res.status(406).send("暱稱不可為空");
+  } else if (nickname.length > 32) {
+    res.status(406).send("暱稱長度不可超過 30 字");
+  } else {
+    await users.findByIdAndUpdate(uid, { nickname });
+    res.status(200).send(nickname);
   }
 });
 
