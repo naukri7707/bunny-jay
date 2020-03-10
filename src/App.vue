@@ -1,8 +1,8 @@
 <template>
   <div id="app" :style="appStyle">
     <Sidebar />
+    <Navbar />
     <main id="main" :class="{ 'sidebar-hidden': $store.state.sidebar.hidden }">
-      <Navbar />
       <router-view />
     </main>
   </div>
