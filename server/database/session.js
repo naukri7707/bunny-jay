@@ -8,7 +8,7 @@ const Model = require("mongoose").model;
 const Session = new Schema(
   {
     // pid
-    _id: Number,
+    _id: String,
     // 時效
     expires: Date,
     // 資料
