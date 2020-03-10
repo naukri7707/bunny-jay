@@ -51,6 +51,31 @@ export default {
             reject(err.response);
           });
       });
+    },
+    profile() {
+      return new Promise((resolve, reject) => {
+        axios
+          .get("/user/profile")
+          .then(res => {
+            resolve(res);
+          })
+          .catch(err => {
+            reject(err.response);
+          });
+      });
+    },
+    editNickname({ state }, nickname) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post("/user/edit-nickname", { nickname })
+          .then(({ data }) => {
+            state.nickname = data;
+            resolve();
+          })
+          .catch(err => {
+            reject(err.response);
+          });
+      });
     }
   }
 };
