@@ -3,7 +3,7 @@
  */
 const path = "/user";
 const router = require("express").AsyncRouter();
-const { users } = include("@/database");
+const { sessions, users } = include("@/database");
 
 // 下一個新用戶序列號
 let uid = 0;
@@ -25,7 +25,7 @@ init(next => {
 
 // 用戶登入
 router.postAsync("/login", async (req, res) => {
-  const { username, password, option } = req.body;
+  const { username, password, option, agent } = req.body;
   const user = await users.findOne({ username });
   if (user === null) {
     res.status(404).send("無此帳號");
@@ -42,6 +42,7 @@ router.postAsync("/login", async (req, res) => {
         }
         const { _id, usergroup, nickname } = user;
         req.session.uid = _id;
+        req.session.agent = agent;
         res.status(200).json({ uid: _id, usergroup, nickname });
       }
     });
@@ -139,6 +140,33 @@ router.postAsync("/edit-nickname", async (req, res) => {
   } else {
     await users.findByIdAndUpdate(uid, { nickname });
     res.status(200).send(nickname);
+  }
+});
+
+router.postAsync("/change-password", async (req, res) => {
+  const { uid } = req.session;
+  const { oldPassword, newPassword } = Object.assign(
+    { oldPassword: "", newPassword: "" },
+    req.body
+  );
+  // TODO 正則驗證
+  if (uid === undefined) {
+    res.status(401).send("尚未登入");
+  } else if (oldPassword === "" || newPassword === "") {
+    res.status(406).send("欄位不可為空");
+  } else if (oldPassword === newPassword) {
+    res.status(406).send("新舊密碼相同");
+  } else if (newPassword.length < 8 || newPassword.length > 32) {
+    res.status(406).send("密碼長度需介於8至32之間");
+  } else {
+    let user = await users.findOne({ _id: uid, password: oldPassword });
+    if (user === null) {
+      res.status(406).send("密碼不正確");
+    } else {
+      await users.findByIdAndUpdate(uid, { password: newPassword });
+      await sessions.remove({ "session.uid": uid });
+      res.status(204).end();
+    }
   }
 });
 
