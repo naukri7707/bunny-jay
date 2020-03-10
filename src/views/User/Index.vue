@@ -3,7 +3,7 @@
     <b-nav tabs class="router-tab">
       <b-nav-item
         v-for="tab in tabs"
-        :key="tab.name"
+        :key="tab.path"
         :to="tab.path"
         :active="tab.path === $route.path"
       >
