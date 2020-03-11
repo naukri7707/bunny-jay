@@ -2,7 +2,7 @@
   <b-card
     class="product-card"
     tag="router-link"
-    :to="`/borrow?pid=${_id}`"
+    :to="`./borrow?pid=${_id}`"
     img-top
     :img-src="uid ? productInfo.iconOff : productInfo.iconOn"
     :img-alt="productInfo.key"

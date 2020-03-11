@@ -15,7 +15,7 @@
           <SidebarCard
             v-for="product in productInfoList"
             :key="product.key"
-            :to="`/product/${product.key}`"
+            :to="`/product/${product.key}/list`"
           >
             <b-card-title>{{ product.zhName }}</b-card-title>
             <b-card-sub-title>{{ product.name }}</b-card-sub-title>

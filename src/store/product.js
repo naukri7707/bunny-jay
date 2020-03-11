@@ -5,9 +5,9 @@ export default {
   namespaced: true,
   state: {
     get selectionInfo() {
-      return this.infoList[this.mSelection] || Product.default;
+      return this.infoList[this.selection] || Product.default;
     },
-    mSelection: "",
+    selection: "",
     infoList: {},
     userBorrowList: []
   },
@@ -29,7 +29,7 @@ export default {
     // 更新產品狀態
     update({ state }, product) {
       return new Promise((resolve, reject) => {
-        state.mSelection = product;
+        state.selection = product;
         axios
           .get("/product/update", {
             params: {
@@ -120,7 +120,7 @@ export default {
       }
       const state = context.state;
       const product = state.selectionInfo.key;
-      state.mSelection = product;
+      state.selection = product;
       axios
         .get("/product/addRandom", {
           params: {

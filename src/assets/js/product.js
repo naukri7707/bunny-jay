@@ -32,21 +32,21 @@ export default class Product {
 
   /** 租借頁背景圖 */
   get background() {
-    return require(`@/${Product.imgUrl}/${this.key}_bg.png`);
+    return this.key ? require(`@/${Product.imgUrl}/${this.key}_bg.png`) : "";
   }
   /** 圖示 */
   get icon() {
-    return require(`@/${Product.imgUrl}/${this.key}_icon.png`);
+    return this.key ? require(`@/${Product.imgUrl}/${this.key}_icon.png`) : "";
   }
 
   /** 可租借圖示 */
   get iconOn() {
-    return require(`@/${Product.imgUrl}/${this.key}_on.png`);
+    return this.key ? require(`@/${Product.imgUrl}/${this.key}_on.png`) : "";
   }
 
   /** 不可租借圖示 */
   get iconOff() {
-    return require(`@/${Product.imgUrl}/${this.key}_off.png`);
+    return this.key ? require(`@/${Product.imgUrl}/${this.key}_off.png`) : "";
   }
 
   /** 側邊欄圖示 */

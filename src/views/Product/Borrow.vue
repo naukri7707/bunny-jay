@@ -81,6 +81,7 @@ export default {
       ({ data }) => {
         this.product = data.product;
         this.user = data.user;
+
         this.$store.commit(
           "app/setBackgroundImage",
           this.productInfo.background
@@ -139,6 +140,10 @@ export default {
             variant: "danger"
           });
           if (status === 401) {
+            this.toast(this.$route.path, {
+              title: `Error ${this.$route.path}`,
+              variant: "danger"
+            });
             this.$router.push("/user/login");
           }
         }
