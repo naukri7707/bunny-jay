@@ -56,35 +56,36 @@ export default {
       function agent() {
         let { platform, userAgent } = navigator;
         let os = "Unknown";
-        if (
-          ["Macintosh", "MacIntel", "MacPPC", "Mac68K"].indexOf(platform) !== -1
-        ) {
+        if (/Macintosh|MacIntel|MacPPC|Mac68K/.test(platform)) {
           os = "Mac OS";
-        } else if (["iPhone", "iPad", "iPod"].indexOf(platform) !== -1) {
+        } else if (/iPhone|iPad|iPod/.test(platform)) {
           os = "iOS";
-        } else if (
-          ["Win32", "Win64", "Windows", "WinCE"].indexOf(platform) !== -1
-        ) {
+        } else if (/Win32|Win64|Windows|WinCE/.test(platform)) {
           os = "Windows";
         } else if (/Android/.test(userAgent)) {
           os = "Android";
         } else if (/Linux/.test(platform)) {
           os = "Linux";
         }
-        let keys = [
-          "Unknown",
-          "rv",
-          "Firefox",
-          "Safari",
-          "Chrome",
-          "Edge",
-          "Opera"
-        ];
-        let i = keys.length;
-        while (--i && userAgent.indexOf(keys[i]) === -1);
-
-        return `${os} (${i === 1 ? "IE" : keys[i]})`;
+        let keys = {
+          Opera: /Opera|OPR/,
+          Edge: /Edge/,
+          Chrome: /Chrome/,
+          Safari: /Safari/,
+          Firefox: /Firefox/,
+          InternetExplorer: /IE|rv/,
+          Unknown: /Unknown/
+        };
+        for (const [key, value] of Object.entries(keys)) {
+          if (value.test(userAgent)) {
+            return `${os} (${key})`;
+          }
+        }
       }
+      this.toast(navigator.userAgent, {
+        title: agent(),
+        variant: "success"
+      });
       this.$store
         .dispatch("user/login", Object.assign(this.form, { agent: agent() }))
         .then(
