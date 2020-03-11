@@ -37,6 +37,16 @@ export default {
         state.nickname = nickname;
       });
     },
+    checkLogin() {
+      return new Promise((resolve, reject) => {
+        axios
+          .get("/user/check-login")
+          .then(() => {})
+          .catch(err => {
+            reject(err.response);
+          });
+      });
+    },
     logout({ state }) {
       return new Promise((resolve, reject) => {
         axios

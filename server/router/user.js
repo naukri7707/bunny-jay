@@ -65,6 +65,16 @@ router.postAsync("/auto-login", async (req, res) => {
   }
 });
 
+// 檢查登入
+router.get("/check-login", (req, res) => {
+  const { uid } = req.session;
+  if (uid === undefined) {
+    res.status(401).send("尚未登入");
+  } else {
+    res.status(204).end();
+  }
+});
+
 // 用戶登出
 router.post("/logout", (req, res) => {
   if (req.session.uid === undefined) {

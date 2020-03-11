@@ -24,8 +24,28 @@ export default {
         { path: "/user/setting", title: "設定" }
       ]
     };
+  },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      // 檢查登入狀態，若未登入導向至登入頁面
+      vm.$store.dispatch("user/checkLogin").then(
+        () => {
+          next();
+        },
+        ({ status, data }) => {
+          if (status === 401) {
+            next("/user/login");
+          } else {
+            this.toast(data, {
+              title: `Error ${status}`,
+              variant: "danger"
+            });
+            next();
+          }
+        }
+      );
+    });
   }
-  // emit change tab
 };
 </script>
 
