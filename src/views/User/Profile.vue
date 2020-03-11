@@ -2,19 +2,25 @@
   <b-container id="profile">
     <b-form v-if="form._id">
       <b-input-group class="mb-3" prepend="UID">
-        <b-form-input v-model="form._id" disabled></b-form-input>
+        <b-form-input type="text" v-model="form._id" disabled></b-form-input>
       </b-input-group>
       <b-input-group class="mb-3" prepend="用戶組">
         <b-form-input
+          type="text"
           v-model="usergroup[form.usergroup]"
           disabled
         ></b-form-input>
       </b-input-group>
       <b-input-group class="mb-3" prepend="帳號">
-        <b-form-input v-model="form.username" disabled></b-form-input>
+        <b-form-input
+          type="text"
+          v-model="form.username"
+          disabled
+        ></b-form-input>
       </b-input-group>
       <b-input-group class="mb-3" prepend="暱稱">
         <b-form-input
+          type="text"
           v-model="form.nickname"
           :disabled="!isEditingNickname"
         ></b-form-input>
@@ -46,7 +52,7 @@
         32個字內，請避免使用特殊符號。</b-alert
       >
       <b-input-group class="mb-3" prepend="信箱">
-        <b-form-input v-model="form.email" disabled></b-form-input>
+        <b-form-input type="text" v-model="form.email" disabled></b-form-input>
       </b-input-group>
     </b-form>
   </b-container>
