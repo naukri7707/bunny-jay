@@ -56,12 +56,12 @@ export default {
       function agent() {
         let { platform, userAgent } = navigator;
         let os = "Unknown";
-        if (/Macintosh|MacIntel|MacPPC|Mac68K/.test(platform)) {
+        if (/Win32|Win64|Windows|WinCE/.test(platform)) {
+          os = "Windows";
+        } else if (/Macintosh|MacIntel|MacPPC|Mac68K/.test(platform)) {
           os = "Mac OS";
         } else if (/iPhone|iPad|iPod/.test(platform)) {
           os = "iOS";
-        } else if (/Win32|Win64|Windows|WinCE/.test(platform)) {
-          os = "Windows";
         } else if (/Android/.test(userAgent)) {
           os = "Android";
         } else if (/Linux/.test(platform)) {
@@ -82,10 +82,6 @@ export default {
           }
         }
       }
-      this.toast(navigator.userAgent, {
-        title: agent(),
-        variant: "success"
-      });
       this.$store
         .dispatch("user/login", Object.assign(this.form, { agent: agent() }))
         .then(
