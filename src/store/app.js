@@ -7,7 +7,11 @@ export default {
   },
   mutations: {
     setBackgroundImage(state, path) {
-      state.style.backgroundImage = `url(${path})`;
+      if (path) {
+        state.style.backgroundImage = `url(${path})`;
+      } else {
+        state.style.backgroundImage = undefined;
+      }
     }
   }
 };

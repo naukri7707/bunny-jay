@@ -47,6 +47,7 @@ export default {
   },
   beforeRouteLeave(to, from, next) {
     this.$store.state.product.selection = "";
+    this.$store.commit("app/setBackgroundImage", null);
     next();
   }
 };
