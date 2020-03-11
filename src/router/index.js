@@ -4,11 +4,11 @@ import VueRouter from "vue-router";
 import Index from "@/views/Index.vue";
 import Login from "@/views/Login.vue";
 // User
-import User from "@/views/User/Index.vue";
+import User from "@/views/User.vue";
 import Profile from "@/views/User/Profile.vue";
 import Setting from "@/views/User/Setting.vue";
 // Product
-import Product from "@/views/Product/Index.vue";
+import Product from "@/views/Product.vue";
 import Borrow from "@/views/Product/Borrow.vue";
 import List from "@/views/Product/List.vue";
 import NotFound from "@/views/404.vue";
