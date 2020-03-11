@@ -17,7 +17,6 @@
 
 <script>
 import ProductCard from "@/components/ProductCard.vue";
-import Product from "@/assets/js/product";
 
 export default {
   name: "product",
@@ -61,7 +60,7 @@ export default {
     next();
   },
   beforeRouteLeave(to, from, next) {
-    this.$store.state.product.selectionInfo = Product.default;
+    this.$store.state.product.selection = "";
     next();
   }
 };
