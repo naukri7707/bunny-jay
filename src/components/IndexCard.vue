@@ -1,5 +1,9 @@
 <template>
-  <b-row class="index-card">
+  <router-link
+    tag="b-row"
+    class="index-card"
+    :to="`/product/${product}/borrow?pid=${_id}`"
+  >
     <b-img
       ref="icon"
       class="icon"
@@ -22,14 +26,16 @@
               productInfo.day
             }}天，您已經使用了{{ useDay }}天，若要再度預借可以
           </div>
-          <router-link :to="`product/${product}`">快速預借 &gt;</router-link>
+          <router-link :to="`product/${product}/list`"
+            >快速預借 &gt;</router-link
+          >
         </template>
         <template v-else>
           <div>{{ productInfo.zhName }}需當天歸還</div>
         </template>
       </p>
     </div>
-  </b-row>
+  </router-link>
 </template>
 
 <script>
@@ -58,6 +64,7 @@ export default {
 
 <style lang="scss" scoped>
 .index-card {
+  @include buttonify;
   margin: 1.25rem;
 
   .icon {
