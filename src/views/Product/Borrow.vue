@@ -100,21 +100,13 @@ export default {
       this.$store.dispatch("product/borrow", this.$route.query.pid).then(
         ({ data }) => {
           const { product, user } = data;
-          if (data.borrow) {
-            this.product = product;
-            this.user = user;
-            let msg = this.isExpired
-              ? `您已成功預借「${product.name}」，請在當天放學前歸還。`
-              : `您已成功預借「${product.name}」，
+          this.product = product;
+          this.user = user;
+          let msg = this.isExpired
+            ? `您已成功預借「${product.name}」，請在當天放學前歸還。`
+            : `您已成功預借「${product.name}」，
               請於${this.deadDate}放學前歸還。`;
-            this.toast(msg, { title: "租借成功", variant: "success" });
-          } else {
-            let msg =
-              user._id === this.$store.state.user.uid
-                ? "你已經借到拉！"
-                : `「${product.name}」已被 ${user.nickname}(${user.username}) 租用`;
-            this.toast(msg, { title: "無法預借", variant: "warning" });
-          }
+          this.toast(msg, { title: "租借成功", variant: "success" });
         },
         ({ status, data }) => {
           this.toast(data, {

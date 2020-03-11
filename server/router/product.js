@@ -91,18 +91,17 @@ router.postAsync("/borrow", async (req, res) => {
     res.status(500).send("找不到目標產品");
     return;
   }
-  let borrow = product.uid === 0;
-  // 目前沒有使用者，租借之
-  if (borrow) {
+  if (product.uid !== 0) {
+    res.status(412).send("該產品已被租用");
+  } else {
     product = await products.findByIdAndUpdate(
       pid,
       { uid, borrowTime: Date.today() },
       { new: true }
     );
+    const user = await users.findById(product.uid, ["username", "nickname"]);
+    res.status(200).send({ product, user });
   }
-  // 取得的使用者資訊
-  const user = await users.findById(product.uid, ["username", "nickname"]);
-  res.status(200).send({ borrow, product, user });
 });
 
 // 回收產品
