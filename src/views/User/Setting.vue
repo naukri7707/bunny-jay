@@ -3,6 +3,7 @@
     id="setting"
     nav-wrapper-class="nav-wrapper"
     content-class="content"
+    @activate-tab="onActivateTab"
     pills
     fill
   >
@@ -12,20 +13,36 @@
     <b-tab title="已登入裝置" lazy>
       <LoginDevice />
     </b-tab>
-    <b-tab title="泡咖啡" lazy>
-      <b-button @click="test()">TEST</b-button>
-    </b-tab>
+    <b-tab title="泡咖啡" lazy></b-tab>
   </b-tabs>
 </template>
 
 <script>
 import ChangePassword from "@/components/ChangePassword.vue";
 import LoginDevice from "@/components/LoginDevice.vue";
+
 export default {
   name: "setting",
   components: {
     ChangePassword,
     LoginDevice
+  },
+  methods: {
+    onActivateTab(newTabIndex, prevTabIndex, bvEvt) {
+      if (newTabIndex === 2) {
+        bvEvt.preventDefault();
+        this.axios
+          .post("/user/coffee")
+          .then(() => {})
+          .catch(({ response }) => {
+            const { status, statusText, data } = response;
+            this.toast(data, {
+              title: `Error ${status} : ${statusText}`,
+              variant: "danger"
+            });
+          });
+      }
+    }
   }
 };
 </script>

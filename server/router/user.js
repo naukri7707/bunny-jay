@@ -212,6 +212,15 @@ router.postAsync("/logout-all-device", async (req, res) => {
   }
 });
 
+router.postAsync("/coffee", async (req, res) => {
+  const { uid } = req.session;
+  if (uid === undefined) {
+    res.status(401).send("尚未登入");
+  } else {
+    res.status(418).send("當前伺服器為一個茶壺，因此拒絕沖泡咖啡");
+  }
+});
+
 // 攔截部分 user 異常事件
 router.use((err, req, res, next) => {
   if (err.name === "MongoError" && err.code === 11000) {
