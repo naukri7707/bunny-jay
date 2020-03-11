@@ -1,13 +1,13 @@
 <template>
   <b-form @submit.prevent="submit()">
     <b-input-group class="mb-3" prepend="舊的密碼">
-      <b-form-input v-model="oldPassword"></b-form-input>
+      <b-form-input type="password" v-model="oldPassword"></b-form-input>
     </b-input-group>
     <b-input-group class="mb-3" prepend="新的密碼">
-      <b-form-input v-model="newPassword"></b-form-input>
+      <b-form-input type="password" v-model="newPassword"></b-form-input>
     </b-input-group>
     <b-input-group class="mb-3" prepend="確認密碼">
-      <b-form-input v-model="comfirmPassword"></b-form-input>
+      <b-form-input type="password" v-model="comfirmPassword"></b-form-input>
     </b-input-group>
     <b-button class="float-right" type="submit" variant="success"
       >確認</b-button
