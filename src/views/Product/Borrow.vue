@@ -107,6 +107,7 @@ export default {
             : `您已成功預借「${product.name}」，
               請於${this.deadDate}放學前歸還。`;
           this.toast(msg, { title: "租借成功", variant: "success" });
+          this.productInfo.status.remain--;
         },
         ({ status, data }) => {
           this.toast(data, {
@@ -125,6 +126,7 @@ export default {
           this.product = data;
           this.user = { _id: 0, username: "", nickname: "" };
           this.toast("回收完成", { title: "回收成功", variant: "success" });
+          this.productInfo.status.remain++;
         },
         ({ status, data }) => {
           this.toast(data, {
