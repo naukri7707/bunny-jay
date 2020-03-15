@@ -10,7 +10,7 @@
     <b-tab title="修改密碼" active>
       <ChangePassword />
     </b-tab>
-    <b-tab title="已登入裝置" lazy>
+    <b-tab title="帳號安全" lazy>
       <LoginDevice />
     </b-tab>
     <b-tab title="泡咖啡" lazy></b-tab>
