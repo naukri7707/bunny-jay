@@ -2,25 +2,152 @@
  * 使用者路由
  */
 const path = "/user";
+const nodemailer = require("nodemailer");
 const router = require("express").AsyncRouter();
 const { sessions, users } = include("@/database");
 
-// 下一個新用戶序列號
+var transporter = nodemailer.createTransport(config.email);
+// 下一個新用戶流水號
 let uid = 0;
+// 金鑰
+let keys = [];
+let kid = 14; // length - 1， 讓下一周期歸 0
 
-init(next => {
-  // 初始化 uid
-  users.aggregate(
-    [{ $group: { _id: null, max: { $max: "$_id" } } }],
-    (err, res) => {
-      if (res.length === 0) {
-        uid = 1;
-      } else {
-        uid = res[0].max + 1;
+init(
+  next => {
+    // 初始化 uid
+    users.aggregate(
+      [{ $group: { _id: null, max: { $max: "$_id" } } }],
+      (err, res) => {
+        if (res.length === 0) {
+          uid = 1;
+        } else {
+          uid = res[0].max + 1;
+        }
+        next();
       }
-      next();
+    );
+  },
+  next => {
+    // 初始化金鑰陣列
+    keys[0] = Date.now()
+      .toString()
+      .getHashString();
+    for (let i = 1; i < 15; i++) {
+      keys[i] = keys[i - 1].getHashString();
     }
+    // 定時刷新金鑰 (15分鐘過期)
+    setInterval(() => {
+      kid = (kid + 1) % 15;
+      keys[kid] = keys[kid === 0 ? 14 : kid - 1].getHashString();
+    }, 60 * 1000);
+    next();
+  }
+);
+
+function getResetKey(email, password) {
+  return email.getHashString() + password.getHashString() + keys[kid];
+}
+
+function vaildataResetKey(email, password, vid) {
+  const main = email.getHashString() + password.getHashString();
+  for (let i = main.length - 1; i >= 0; i--) {
+    if (main[i] != vid[i]) {
+      return 1;
+    }
+  }
+  for (let i = 0; i < 15; i++) {
+    if (main + keys[i] === vid) {
+      return 0;
+    }
+  }
+  return 2;
+}
+
+// TODO password validation function
+
+// 重設密碼
+router.postAsync("/reset-password", async (req, res) => {
+  const { uid, vid, newPassword } = req.body;
+  const { email, password } = await users.findById(uid, "email password");
+  switch (vaildataResetKey(email, password, vid)) {
+    case 2:
+      res.status(403).send("驗證已過期");
+      break;
+    case 1:
+      res.status(401).send("無效的驗證");
+      break;
+    case 0:
+      // TODO 檢查密碼合法
+      await users.findByIdAndUpdate(uid, { password: newPassword });
+      res.status(200).send("重設成功");
+      break;
+    default:
+      break;
+  }
+});
+
+// 忘記密碼
+router.postAsync("/forgot-password", async (req, res) => {
+  let { email } = req.body;
+  let { _id, password, nickname } = await users.findOne(
+    { email },
+    "password nickname"
   );
+  // reset link
+  let link = `${config.domain}/reset-password?uid=${_id}&vid=${getResetKey(
+    email,
+    password
+  )}`;
+
+  // send mail
+  await transporter.sendMail({
+    from: `bunny-jay <${config.email.auth.user}>`,
+    to: email,
+    subject: "重置您的密碼",
+    html: `
+    <div
+    style="font-family: Noto Sans TC, Microsoft YaHei, 微軟正黑體;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 3rem 0 10rem;"
+  >
+    <div>
+      <h1 style="padding-left: 1rem;">Bunny Jay</h1>
+      <hr style="border: 5px solid #416C78; margin:0" />
+      <div
+        style="background-color: #e2e2e2;
+      padding: 2rem 1rem 3rem;"
+      >
+        <h3>
+          您好, ${nickname}
+        </h3>
+        <p>
+          請點擊按鈕以重置您的密碼。如果您沒有申請相關服務，請忽略這封郵件，並注意帳號安全。
+        </p>
+        <div
+          style="margin-top: 8rem;
+        text-align: center;"
+        >
+          <a
+            style="text-decoration: none;
+          color: #4a4a4a;
+          padding: 0.25rem;
+          border-radius: 0.5rem;
+          border-style: outset;
+          background-color: #ededed;
+          border-color: #ededed;
+            "
+            href="${link}"
+            >重置我的密碼</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>  
+      `
+  });
+  res.status(200).send("郵件已寄出");
 });
 
 // 用戶登入

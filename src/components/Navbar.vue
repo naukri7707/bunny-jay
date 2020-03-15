@@ -5,7 +5,7 @@
         <b-dropdown-item to="/user/profile">個人資料</b-dropdown-item>
         <b-dropdown-item @click="logout()">登出</b-dropdown-item>
       </b-nav-item-dropdown>
-      <b-nav-item v-else to="/user/login">登入</b-nav-item>
+      <b-nav-item v-else to="/login">登入</b-nav-item>
     </b-navbar-nav>
   </b-navbar>
 </template>
@@ -29,7 +29,7 @@ export default {
             title: "登出成功",
             variant: "success"
           });
-          this.$router.push("/user/login");
+          this.$router.push("/login");
         },
         ({ status, data }) => {
           this.toast(data, {

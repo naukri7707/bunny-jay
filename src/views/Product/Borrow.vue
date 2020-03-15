@@ -115,7 +115,7 @@ export default {
             variant: "danger"
           });
           if (status === 401) {
-            this.$router.push("/user/login");
+            this.$router.push("/login");
           }
         }
       );
@@ -138,7 +138,7 @@ export default {
               title: `Error ${this.$route.path}`,
               variant: "danger"
             });
-            this.$router.push("/user/login");
+            this.$router.push("/login");
           }
         }
       );

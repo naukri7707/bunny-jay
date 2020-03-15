@@ -6,7 +6,7 @@ GET http://localhost:8088/product/update/key HTTP/1.1
 
 ### login
 
-POST http://localhost:8088/user/login HTTP/1.1
+POST http://localhost:8088/login HTTP/1.1
 content-type: application/json
  
 {
@@ -41,3 +41,12 @@ content-type: application/json
 ### get status 
 
 GET http://localhost:8088/product/status?pid=9 HTTP/1.1
+
+### email
+
+POST http://localhost:8088/user/forgot-password HTTP/1.1
+content-type: application/json
+ 
+{
+    "email": "naukri7707@gmail.com"
+}

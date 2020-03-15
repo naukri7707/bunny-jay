@@ -30,6 +30,7 @@
             <b-form-checkbox value="keep-login">
               保持登入狀態
             </b-form-checkbox>
+            <router-link to="/forgot-password">忘記密碼?</router-link>
           </b-form-checkbox-group>
         </b-form-group>
         <b-button type="submit" variant="primary">登入</b-button>

@@ -34,7 +34,7 @@ export default {
         },
         ({ status, data }) => {
           if (status === 401) {
-            next("/user/login");
+            next("/login");
           } else {
             this.toast(data, {
               title: `Error ${status}`,

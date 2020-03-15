@@ -62,6 +62,30 @@ export default {
           });
       });
     },
+    forgotPassword(context, email) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post("/user/forgot-password", { email })
+          .then(res => {
+            resolve(res);
+          })
+          .catch(err => {
+            reject(err.response);
+          });
+      });
+    },
+    resetPassword(context, data) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post("/user/reset-password", data)
+          .then(res => {
+            resolve(res);
+          })
+          .catch(err => {
+            reject(err.response);
+          });
+      });
+    },
     profile() {
       return new Promise((resolve, reject) => {
         axios

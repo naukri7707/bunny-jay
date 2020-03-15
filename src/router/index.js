@@ -3,6 +3,8 @@ import VueRouter from "vue-router";
 // Views
 import Index from "@/views/Index.vue";
 import Login from "@/views/Login.vue";
+import ForgotPassword from "@/views/ForgotPassword.vue";
+import ResetPassword from "@/views/ResetPassword.vue";
 // User
 import User from "@/views/User.vue";
 import Profile from "@/views/User/Profile.vue";
@@ -16,6 +18,11 @@ Vue.use(VueRouter);
 
 const routes = [
   { path: "/", component: Index },
+  // Account
+  { path: "/login", component: Login },
+  { path: "/forgot-password", component: ForgotPassword },
+  { path: "/reset-password", component: ResetPassword },
+
   // Product
   {
     path: "/product/:product",
@@ -26,7 +33,6 @@ const routes = [
     ]
   },
   // User
-  { path: "/user/login", component: Login },
   {
     path: "/user",
     component: User,
