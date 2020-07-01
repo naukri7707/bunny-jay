@@ -41,6 +41,7 @@ router.postAsync("/reset-password", async (req, res) => {
     res.status(403).send("驗證已過期");
   } else {
     await users.findByIdAndUpdate(resetData.uid, { password: newPassword });
+    // TODO validation password
     res.status(200).send("重設成功");
   }
 });
