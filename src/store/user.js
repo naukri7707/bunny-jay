@@ -62,10 +62,10 @@ export default {
           });
       });
     },
-    forgotPassword(context, email) {
+    forgotPassword(context, username) {
       return new Promise((resolve, reject) => {
         axios
-          .post("/user/forgot-password", { email })
+          .post("/user/forgot-password", { username })
           .then(res => {
             resolve(res);
           })

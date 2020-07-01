@@ -2,11 +2,11 @@
   <b-container>
     <h1>忘記密碼</h1>
     <b-form @submit.prevent="submit()">
-      <b-input-group class="mb-3" prepend="電子郵箱">
+      <b-input-group class="mb-3" prepend="帳號">
         <b-form-input
           type="text"
-          v-model="email"
-          placeholder="綁定的電子郵箱"
+          v-model="username"
+          placeholder="帳號"
         ></b-form-input>
       </b-input-group>
       <b-button class="float-right" type="submit" variant="success"
@@ -21,12 +21,12 @@ export default {
   name: "forgotPassword",
   data() {
     return {
-      email: ""
+      username: ""
     };
   },
   methods: {
     submit() {
-      this.$store.dispatch("user/forgotPassword", this.email).then(
+      this.$store.dispatch("user/forgotPassword", this.username).then(
         ({ data }) => {
           this.toast("請於15分鐘內完成密碼重置", {
             title: data,

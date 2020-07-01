@@ -4,101 +4,59 @@
 const path = "/user";
 const nodemailer = require("nodemailer");
 const router = require("express").AsyncRouter();
-const { sessions, users } = include("@/database");
+const { sessions, passwordRecovers, users } = include("@/database");
 
 var transporter = nodemailer.createTransport(config.email);
+
+// 重制密碼時限
+const RESET_PASSWORD_DEADTIME = 15 * 60 * 1000;
+
 // 下一個新用戶流水號
 let uid = 0;
-// 金鑰
-let keys = [];
-let kid = 14; // length - 1， 讓下一周期歸 0
 
-init(
-  next => {
-    // 初始化 uid
-    users.aggregate(
-      [{ $group: { _id: null, max: { $max: "$_id" } } }],
-      (err, res) => {
-        if (res.length === 0) {
-          uid = 1;
-        } else {
-          uid = res[0].max + 1;
-        }
-        next();
+init(next => {
+  // 初始化 uid
+  users.aggregate(
+    [{ $group: { _id: null, max: { $max: "$_id" } } }],
+    (err, res) => {
+      if (res.length === 0) {
+        uid = 1;
+      } else {
+        uid = res[0].max + 1;
       }
-    );
-  },
-  next => {
-    // 初始化金鑰陣列
-    keys[0] = Date.now()
-      .toString()
-      .getHashString();
-    for (let i = 1; i < 15; i++) {
-      keys[i] = keys[i - 1].getHashString();
+      next();
     }
-    // 定時刷新金鑰 (15分鐘過期)
-    setInterval(() => {
-      kid = (kid + 1) % 15;
-      keys[kid] = keys[kid === 0 ? 14 : kid - 1].getHashString();
-    }, 60 * 1000);
-    next();
-  }
-);
-
-function getResetKey(email, password) {
-  return email.getHashString() + password.getHashString() + keys[kid];
-}
-
-function vaildataResetKey(email, password, vid) {
-  const main = email.getHashString() + password.getHashString();
-  for (let i = main.length - 1; i >= 0; i--) {
-    if (main[i] != vid[i]) {
-      return 1;
-    }
-  }
-  for (let i = 0; i < 15; i++) {
-    if (main + keys[i] === vid) {
-      return 0;
-    }
-  }
-  return 2;
-}
+  );
+});
 
 // TODO password validation function
 
 // 重設密碼
 router.postAsync("/reset-password", async (req, res) => {
-  const { uid, vid, newPassword } = req.body;
-  const { email, password } = await users.findById(uid, "email password");
-  switch (vaildataResetKey(email, password, vid)) {
-    case 2:
-      res.status(403).send("驗證已過期");
-      break;
-    case 1:
-      res.status(401).send("無效的驗證");
-      break;
-    case 0:
-      // TODO 檢查密碼合法
-      await users.findByIdAndUpdate(uid, { password: newPassword });
-      res.status(200).send("重設成功");
-      break;
-    default:
-      break;
+  const { vid, newPassword } = req.body;
+  const resetData = await passwordRecovers.findById(vid);
+  if (resetData === null) {
+    res.status(401).send("無效的驗證");
+  } else if (resetData.deadtime < Date.now()) {
+    res.status(403).send("驗證已過期");
+  } else {
+    await users.findByIdAndUpdate(resetData.uid, { password: newPassword });
+    res.status(200).send("重設成功");
   }
 });
 
 // 忘記密碼
 router.postAsync("/forgot-password", async (req, res) => {
-  let { email } = req.body;
-  let { _id, password, nickname } = await users.findOne(
-    { email },
-    "password nickname"
-  );
+  let { username } = req.body;
+  let { _id, email, nickname } = await users.findOne({ username });
+  let vid = (
+    await passwordRecovers.create({
+      uid: _id,
+      deadtime: Date.now() + RESET_PASSWORD_DEADTIME
+    })
+  ).id;
   // reset link
-  let link = `${config.domain}/reset-password?uid=${_id}&vid=${getResetKey(
-    email,
-    password
-  )}`;
+  let link = `${config.domain}/reset-password?vid=${vid}`;
 
   // send mail
   await transporter.sendMail({

@@ -20,7 +20,7 @@ mongoose.connect(uri, {
   useUnifiedTopology: true
 });
 
-/** 資料庫連線物件 */
+// 資料庫連線物件
 const { connection } = mongoose;
 
 // 監測錯誤

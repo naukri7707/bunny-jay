@@ -18,8 +18,8 @@ module.exports = {
     auth: {
       // 請先開啟 "低安全性應用程式存取權"
       // https://myaccount.google.com/lesssecureapps
-      user: "",
-      pass: ""
+      user: "nauki7707@gmail.com",
+      pass: "zxc357159!"
     }
   },
   // 資料庫
